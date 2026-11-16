@@ -33,15 +33,34 @@ tailwind.config = {
 }
 </script>
 <style>
-body { font-family: 'Inter', sans-serif; background-color: #0b1711; color: #F4EFE6; overflow-x: hidden; }
-.glass-panel { background: rgba(22, 38, 29, 0.88); backdrop-filter: blur(14px); border: 1px solid rgba(212, 175, 55, 0.25); }
-.glass-card { background: rgba(35, 52, 42, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(200, 90, 50, 0.3); }
+/* ---------- Readability: larger base size, roomier lines, stronger contrast ---------- */
+html { font-size: 17px; }
+body { font-family: 'Inter', sans-serif; background-color: #0b1711; color: #F7F3EA; overflow-x: hidden; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.text-xs { font-size: 0.9rem !important; line-height: 1.6 !important; }
+.text-sm { font-size: 1rem !important; line-height: 1.65 !important; }
+.text-base { font-size: 1.1rem !important; }
+.text-lg { font-size: 1.3rem !important; }
+/* lift the faint text tints so small copy is easy to read on the dark panels */
+.text-parchment-200\/50 { color: rgba(244,239,230,.7) !important; }
+.text-parchment-200\/70 { color: rgba(244,239,230,.88) !important; }
+.text-parchment-200\/80 { color: rgba(244,239,230,.93) !important; }
+.text-parchment-200\/85 { color: rgba(244,239,230,.96) !important; }
+.text-parchment-200\/90 { color: rgba(244,239,230,.97) !important; }
+.uppercase { letter-spacing: .06em; }
+
+.glass-panel { background: rgba(22, 38, 29, 0.92); backdrop-filter: blur(14px); border: 1px solid rgba(212, 175, 55, 0.25); }
+.glass-card { background: rgba(35, 52, 42, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(200, 90, 50, 0.3); }
 canvas { display: block; outline: none; }
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #0b1711; }
 ::-webkit-scrollbar-thumb { background: #C85A32; border-radius: 4px; }
 #gis-map { position: absolute; inset: 0; width: 100%; height: 100%; background: #0b1711; }
-#morph-container, #path-container, #dental-container, #fauna-container, #lithic-container, #isotope-container, #symbolic-container, #strata-container { min-height: 500px; }
+/* Make every 3D canvas fill its panel (fixes the Stratigraphy view not showing) */
+#strata-container canvas, #morph-container canvas, #path-container canvas, #dental-container canvas,
+#strata-container canvas {
+  position: absolute; inset: 0; width: 100% !important; height: 100% !important;
+}
+#morph-container, #path-container, #dental-container, #fauna-container, #lithic-container, #symbolic-container, #strata-container { min-height: 500px; touch-action: none; }
 
 .site-popup .maplibregl-popup-content {
   background: linear-gradient(135deg, rgba(22,38,29,.97), rgba(11,23,17,.98)) !important;
@@ -53,53 +72,53 @@ canvas { display: block; outline: none; }
   font-family: 'Inter', sans-serif;
 }
 .site-popup .maplibregl-popup-tip { border-top-color: rgba(22,38,29,.97) !important; border-bottom-color: rgba(22,38,29,.97) !important; }
-.site-popup .maplibregl-popup-close-button { color: #C85A32 !important; font-size: 18px !important; padding: 2px 8px !important; background: transparent !important; }
+.site-popup .maplibregl-popup-close-button { color: #C85A32 !important; font-size: 20px !important; padding: 2px 8px !important; background: transparent !important; }
 .site-popup .maplibregl-popup-close-button:hover { background: rgba(200,90,50,.25) !important; }
 
 .map-legend {
   position: absolute; top: 14px; left: 14px; z-index: 20;
-  background: rgba(22,38,29,.9); backdrop-filter: blur(10px);
+  background: rgba(22,38,29,.92); backdrop-filter: blur(10px);
   border: 1px solid rgba(212,175,55,.4); border-radius: 10px;
   padding: 12px 16px; font-family: 'Inter', sans-serif;
   pointer-events: auto;
 }
 .map-legend-title {
-  font-family: 'Merriweather', serif; font-size: 11px; font-weight: 700;
-  letter-spacing: .08em; text-transform: uppercase; color: #D4AF37; margin-bottom: 8px;
+  font-family: 'Merriweather', serif; font-size: 13px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: #D4AF37; margin-bottom: 8px;
   border-bottom: 1px solid rgba(212,175,55,.25); padding-bottom: 6px;
 }
-.map-legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(244,239,230,.9); margin-bottom: 5px; }
-.map-legend-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #D4AF37; flex-shrink: 0; }
+.map-legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #F7F3EA; margin-bottom: 5px; }
+.map-legend-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #D4AF37; flex-shrink: 0; }
 
 .map-timeline {
   position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
-  z-index: 20; width: min(560px, calc(100% - 40px));
-  background: rgba(22,38,29,.92); backdrop-filter: blur(12px);
+  z-index: 20; width: min(600px, calc(100% - 40px));
+  background: rgba(22,38,29,.94); backdrop-filter: blur(12px);
   border: 1px solid rgba(212,175,55,.4); border-radius: 12px;
   padding: 12px 18px; pointer-events: auto;
 }
 .map-timeline-title {
-  font-family: 'Merriweather', serif; font-size: 11px; font-weight: 700;
-  letter-spacing: .08em; text-transform: uppercase; color: #D4AF37;
+  font-family: 'Merriweather', serif; font-size: 13px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: #D4AF37;
   display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
 }
-.map-timeline-year { font-family: 'Merriweather', serif; font-size: 13px; font-weight: 700; color: #FDFBF7; }
-.map-timeline-track { width: 100%; height: 5px; background: rgba(11,23,17,.9); border-radius: 3px; position: relative; overflow: hidden; border: 1px solid rgba(212,175,55,.25); }
+.map-timeline-year { font-family: 'Merriweather', serif; font-size: 15px; font-weight: 700; color: #FDFBF7; }
+.map-timeline-track { width: 100%; height: 6px; background: rgba(11,23,17,.9); border-radius: 3px; position: relative; overflow: hidden; border: 1px solid rgba(212,175,55,.25); }
 .map-timeline-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #2E5A44, #D4AF37, #C85A32); transition: width .25s ease; }
-.map-timeline-phase { display: flex; justify-content: space-between; margin-top: 6px; font-size: 9.5px; color: rgba(244,239,230,.65); letter-spacing: .05em; }
+.map-timeline-phase { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: rgba(244,239,230,.85); letter-spacing: .03em; }
 .map-timeline-controls { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
-.map-timeline-btn { padding: 4px 10px; font-size: 10.5px; background: rgba(11,23,17,.7); color: #F4EFE6; border: 1px solid rgba(212,175,55,.35); border-radius: 6px; cursor: pointer; transition: all .2s; font-family: 'Inter', sans-serif; font-weight: 500; }
+.map-timeline-btn { padding: 5px 12px; font-size: 13px; background: rgba(11,23,17,.7); color: #F7F3EA; border: 1px solid rgba(212,175,55,.35); border-radius: 6px; cursor: pointer; transition: all .2s; font-family: 'Inter', sans-serif; font-weight: 500; }
 .map-timeline-btn:hover { background: rgba(200,90,50,.3); border-color: #D4AF37; }
-.map-timeline-btn.active { background: #C85A32; color: #FDFBF7; border-color: #D4AF37; }
 
 .beacon-pulse {
   position: relative; width: 36px; height: 36px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   filter: drop-shadow(0 0 8px #C85A32) drop-shadow(0 0 16px #D4AF37);
   transition: transform .25s ease, opacity .35s ease;
-  opacity: 0.4;
+  opacity: 1;
 }
 .beacon-pulse.activated { opacity: 1; animation: beaconPulse 2.4s ease-in-out infinite; }
+.gis-lbl{position:absolute;top:40px;left:50%;transform:translateX(-50%);white-space:nowrap;font:700 13px Inter,sans-serif;color:#fff;background:rgba(8,16,12,.85);border:2px solid;border-radius:6px;padding:2px 7px;pointer-events:none}
 .beacon-pulse svg { width: 36px; height: 36px; display: block; }
 .beacon-pulse .core { fill: #C85A32; stroke: #D4AF37; stroke-width: 1.5; }
 @keyframes beaconPulse {
@@ -108,19 +127,34 @@ canvas { display: block; outline: none; }
 }
 
 .strata-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.strata-btn { padding: 5px 12px; font-size: 11px; background: rgba(11,23,17,.7); color: #F4EFE6; border: 1px solid rgba(212,175,55,.35); border-radius: 6px; cursor: pointer; transition: all .2s; font-weight: 500; }
+.strata-btn { padding: 6px 14px; font-size: 14px; background: rgba(11,23,17,.7); color: #F7F3EA; border: 1px solid rgba(212,175,55,.35); border-radius: 6px; cursor: pointer; transition: all .2s; font-weight: 500; }
 .strata-btn:hover { background: rgba(200,90,50,.3); border-color: #D4AF37; }
 .strata-btn.active { background: #C85A32; color: #FDFBF7; border-color: #D4AF37; }
-.strata-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-.strata-legend-item { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: rgba(244,239,230,.8); }
-.strata-legend-swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(212,175,55,.4); }
+.strata-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+.strata-legend-item { display: flex; align-items: center; gap: 6px; font-size: 13.5px; color: rgba(244,239,230,.95); }
+.strata-legend-swatch { width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(212,175,55,.4); }
+.model-note { font-size: 13px; color: rgba(244,239,230,.8); }
+
+.tl-chip{padding:.35rem .8rem;border-radius:999px;font-size:.9rem;font-weight:600;border:2px solid var(--c);color:#fff;background:transparent;cursor:pointer;transition:all .2s}
+.tl-chip.on{background:var(--c);box-shadow:0 0 14px var(--c)}
+.tl-track{display:flex;gap:0;overflow-x:auto;padding:2.6rem 1rem 1.6rem;position:relative;scroll-behavior:smooth}
+.tl-item{flex:0 0 auto;width:150px;position:relative;text-align:center;cursor:pointer;padding-top:30px}
+.tl-item:before{content:"";position:absolute;top:13px;left:0;right:0;height:5px;background:linear-gradient(90deg,#444,#888)}
+.tl-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:var(--c);border:3px solid #0e1d15;box-shadow:0 0 0 3px var(--c);transition:transform .2s,box-shadow .2s;z-index:2}
+.tl-item:hover .tl-dot{transform:translateX(-50%) scale(1.25)}
+.tl-item.active .tl-dot{transform:translateX(-50%) scale(1.5);box-shadow:0 0 0 4px #fff,0 0 22px var(--c);animation:tlp 1.4s infinite}
+@keyframes tlp{50%{box-shadow:0 0 0 6px #fff,0 0 34px var(--c)}}
+.tl-yr{font-weight:800;color:#fff;font-size:1rem}.tl-lbl{font-size:.85rem;color:#e8dcc4;line-height:1.25;padding:0 .3rem}
+.tl-item.dim{opacity:.18}
+.tl-card{border-radius:1rem;overflow:hidden;border:2px solid var(--c);background:#11231A}
+.tl-card h3{background:var(--c);color:#fff;padding:.8rem 1.1rem;font-family:Merriweather,serif;font-weight:700;font-size:1.25rem}
 </style>
 </head>
 <body class="bg-[#0b1711] text-parchment-200 min-h-screen flex flex-col">
 
 <!-- TOP BANNER -->
 <div class="bg-gradient-to-r from-terracotta-700 via-terracotta-600 to-gold-600 text-parchment-100 text-xs py-2 px-4 text-center font-medium border-b border-gold-500/40 shadow-md flex flex-wrap items-center justify-center gap-2">
-  <span class="bg-gold-500 text-forest-900 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase">◈ Prototype Sample</span>
+  <span class="bg-gold-500 text-forest-900 px-2 py-0.5 rounded text-xs font-bold tracking-wider uppercase">◈ Prototype Sample</span>
   <span class="hidden md:inline text-gold-500">◆</span>
   <span class="font-medium tracking-wide">Asia Khan, Hon. BA (McMaster University)</span>
   <span class="hidden md:inline text-gold-500">◆</span>
@@ -128,47 +162,30 @@ canvas { display: block; outline: none; }
 </div>
 
 <!-- HEADER -->
-<header class="glass-panel sticky top-[36px] z-50 px-6 py-4 flex flex-wrap justify-between items-center shadow-2xl border-b border-gold-500/30">
+<header class="glass-panel sticky top-0 z-50 px-6 py-4 flex flex-wrap justify-between items-center shadow-2xl border-b border-gold-500/30">
   <div class="flex items-center space-x-3">
     <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-terracotta-600 to-gold-600 flex items-center justify-center shadow-lg">
       <i class="fa-solid fa-bone text-parchment-100 text-lg"></i>
     </div>
     <div>
-      <h1 class="font-serif font-bold text-lg md:text-xl tracking-wide text-parchment-100 flex items-center gap-2">
+      <h1 class="font-serif font-bold text-lg md:text-xl tracking-wide text-parchment-100 flex flex-wrap items-center gap-2">
         Krapina Cave · Bioarchaeological Evidence Archive
-        <span class="text-xs bg-terracotta-700/80 text-gold-500 px-2 py-0.5 rounded-full border border-gold-500/30">~130 ka · 900+ fossils · 1,200+ tools</span>
+        <span class="text-xs bg-terracotta-700/80 text-gold-500 px-2 py-0.5 rounded-full border border-gold-500/30">~130 ka · ~900 hominin fossils · ~1,200 lithics</span>
       </h1>
-      <p class="text-xs text-parchment-200/70">Morphology · Pathology · Dental · Fauna · Lithics · Isotopes · Symbolic · Stratigraphy</p>
+      <p class="text-xs text-parchment-200/80">Morphology · Pathology · Dental · Fauna · Lithics · Symbolic · Stratigraphy</p>
     </div>
   </div>
   <nav class="flex flex-wrap items-center gap-2 mt-3 md:mt-0 text-sm">
-    <button onclick="switchTab('gis')" id="nav-gis" class="px-4 py-2 rounded-lg bg-terracotta-600 text-parchment-100 font-medium shadow-md transition-all flex items-center gap-2">
-      <i class="fa-solid fa-globe-americas"></i> GIS
-    </button>
-    <button onclick="switchTab('strata')" id="nav-strata" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-layer-group"></i> Stratigraphy
-    </button>
-    <button onclick="switchTab('morph')" id="nav-morph" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-skull"></i> Morphology
-    </button>
-    <button onclick="switchTab('path')" id="nav-path" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-heart-pulse"></i> Pathology
-    </button>
-    <button onclick="switchTab('dental')" id="nav-dental" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-tooth"></i> Dental
-    </button>
-    <button onclick="switchTab('fauna')" id="nav-fauna" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-paw"></i> Fauna
-    </button>
-    <button onclick="switchTab('lithic')" id="nav-lithic" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-gem"></i> Lithics
-    </button>
-    <button onclick="switchTab('isotope')" id="nav-isotope" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-atom"></i> Isotopes
-    </button>
-    <button onclick="switchTab('symbolic')" id="nav-symbolic" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2">
-      <i class="fa-solid fa-feather"></i> Symbolic
-    </button>
+    <button onclick="switchTab('gis')" id="nav-gis" class="px-4 py-2 rounded-lg bg-terracotta-600 text-parchment-100 font-medium shadow-md transition-all flex items-center gap-2"><i class="fa-solid fa-globe-americas"></i> GIS</button>
+    <button onclick="switchTab('strata')" id="nav-strata" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-layer-group"></i> Stratigraphy</button>
+    <button onclick="switchTab('timeline')" id="nav-timeline" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-timeline"></i> Timeline</button>
+    <button onclick="switchTab('morph')" id="nav-morph" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-skull"></i> Morphology</button>
+    <button onclick="switchTab('path')" id="nav-path" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-heart-pulse"></i> Pathology</button>
+    <button onclick="switchTab('dental')" id="nav-dental" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-tooth"></i> Dental</button>
+    <button onclick="switchTab('fauna')" id="nav-fauna" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-paw"></i> Fauna</button>
+    <button onclick="switchTab('lithic')" id="nav-lithic" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-gem"></i> Lithics</button>
+    <button onclick="switchTab('symbolic')" id="nav-symbolic" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-feather"></i> Symbolic</button>
+    <button onclick="switchTab('refs')" id="nav-refs" class="px-4 py-2 rounded-lg bg-parchment-800/80 hover:bg-parchment-800 text-parchment-200 transition-all flex items-center gap-2"><i class="fa-solid fa-book"></i> References</button>
   </nav>
 </header>
 
@@ -178,10 +195,8 @@ canvas { display: block; outline: none; }
 <section id="tab-gis" class="flex-1 flex flex-col space-y-4">
   <div class="glass-panel p-4 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
     <div>
-      <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-        <i class="fa-solid fa-map-location-dot"></i> Krapina Aerial GIS · Raw Material & Faunal Sources
-      </h2>
-      <p class="text-xs text-parchment-200/80">Interactive satellite terrain of Hušnjakovo hill and surrounding procurement zones. Click any node to inspect geological and archaeological context.</p>
+      <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> Krapina Aerial GIS · Raw Material & Faunal Sources</h2>
+      <p class="text-xs text-parchment-200/80">Interactive satellite terrain around Hušnjakovo hill. The cave position is surveyed; the surrounding zones are interpretive and placed approximately. Click a node for context.</p>
     </div>
     <div class="flex flex-wrap gap-2">
       <button onclick="locateMe()" class="px-3 py-1.5 text-xs bg-gradient-to-r from-gold-500 to-terracotta-600 text-parchment-100 rounded-lg font-medium shadow-md transition-all"><i class="fa-solid fa-location-crosshairs"></i> Find Me</button>
@@ -193,32 +208,21 @@ canvas { display: block; outline: none; }
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
     <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
       <div id="gis-map"></div>
+      <div id="gis-nodes" class="absolute top-3 left-3 z-10 flex flex-col gap-2"></div>
       <div class="map-legend">
         <div class="map-legend-title">Site & Source Zones</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#C85A32;"></span> Krapina Cave (occupation)</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#8B9DC3;"></span> Local flint / radiolarite</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#D4AF37;"></span> Imported stone sources</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#2E5A44;"></span> Faunal procurement zone</div>
-      </div>
-      <div class="absolute bottom-4 left-4 glass-card px-4 py-2 rounded-xl text-xs text-parchment-200/90 pointer-events-none border border-gold-500/20 shadow-lg z-10">
-        <i class="fa-solid fa-circle-info text-gold-500"></i> Drag · Zoom · Click nodes
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#E0663A;"></span> Krapina rock shelter</div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#8BB4F0;"></span> Local river-cobble sources</div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#F0C93B;"></span> Non-local stone (limestone)</div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#3FC48A;"></span> Faunal zone (interpretive)</div>
       </div>
       <div class="map-timeline">
         <div class="map-timeline-title">
-          <span>Site Use Cycle · c. 130 ka</span>
+          <span>Site-use cycle · conceptual model</span>
           <span class="map-timeline-year" id="map-year">Procurement</span>
         </div>
-        <div class="map-timeline-track">
-          <div class="map-timeline-fill" id="map-fill"></div>
-        </div>
-        <div class="map-timeline-phase">
-          <span>Procure</span>
-          <span>Transport</span>
-          <span>Knap</span>
-          <span>Hunt</span>
-          <span>Butcher</span>
-          <span>Discard</span>
-        </div>
+        <div class="map-timeline-track"><div class="map-timeline-fill" id="map-fill"></div></div>
+        <div class="map-timeline-phase"><span>Procure</span><span>Transport</span><span>Knap</span><span>Hunt</span><span>Butcher</span><span>Discard</span></div>
         <div class="map-timeline-controls">
           <button class="map-timeline-btn" onclick="playCycle()"><i class="fa-solid fa-play"></i> Play</button>
           <button class="map-timeline-btn" onclick="pauseCycle()"><i class="fa-solid fa-pause"></i> Pause</button>
@@ -228,27 +232,27 @@ canvas { display: block; outline: none; }
     </div>
     <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between border border-gold-500/20">
       <div>
-        <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
+        <div class="flex items-center justify-between gap-2 pb-3 border-b border-parchment-200/10">
           <h3 id="gis-site-title" class="font-serif font-bold text-gold-500 text-base">Select Node</h3>
-          <span id="gis-site-culture" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">Zone</span>
+          <span id="gis-site-culture" class="text-xs uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100 text-right">Zone</span>
         </div>
         <div class="mt-4 space-y-3 text-xs">
           <p id="gis-site-desc" class="text-parchment-200/90 leading-relaxed">Click any glowing node on the map.</p>
           <div class="bg-[#11231A]/80 p-3 rounded-xl border border-parchment-200/10">
-            <span class="font-semibold text-gold-500 block mb-1">// Geological Context:</span>
-            <p id="gis-site-context" class="text-parchment-200/80 leading-relaxed"></p>
+            <span class="font-semibold text-gold-500 block mb-1">Geological context</span>
+            <p id="gis-site-context" class="text-parchment-200/90 leading-relaxed"></p>
           </div>
           <div class="bg-[#11231A]/80 p-3 rounded-xl border border-parchment-200/10">
-            <span class="font-semibold text-gold-500 block mb-1">// Evidence Types:</span>
-            <ul id="gis-site-evidence" class="list-disc list-inside space-y-1 text-parchment-200/80"></ul>
+            <span class="font-semibold text-gold-500 block mb-1">Evidence types</span>
+            <ul id="gis-site-evidence" class="list-disc list-inside space-y-1 text-parchment-200/90"></ul>
           </div>
           <div class="bg-[#11231A]/80 p-3 rounded-xl border border-parchment-200/10">
-            <span class="font-semibold text-gold-500 block mb-1">// Distance:</span>
-            <p id="gis-site-distance" class="text-parchment-200/80 leading-relaxed"></p>
+            <span class="font-semibold text-gold-500 block mb-1">Distance</span>
+            <p id="gis-site-distance" class="text-parchment-200/90 leading-relaxed"></p>
           </div>
           <div class="bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-            <span class="font-semibold text-gold-500 block mb-1"><i class="fa-solid fa-book"></i> APA 7th:</span>
-            <p id="gis-site-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
+            <span class="font-semibold text-gold-500 block mb-1"><i class="fa-solid fa-book"></i> APA 7th</span>
+            <p id="gis-site-apa" class="text-parchment-200/95 leading-relaxed text-xs"></p>
           </div>
         </div>
       </div>
@@ -261,21 +265,19 @@ canvas { display: block; outline: none; }
   <div class="glass-panel p-4 rounded-2xl">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-layer-group"></i> Stratigraphic Accumulation Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">Watch how repeated site-use cycles deposit archaeological layers over 130,000 years. Each cycle = one occupation layer.</p>
+        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2"><i class="fa-solid fa-layer-group"></i> Stratigraphic Column Lab</h2>
+        <p class="text-xs text-parchment-200/80">Watch the nine levels recognised by Gorjanović-Kramberger build up from the river-gravel base to the cave-bear zone. Drag to rotate, scroll to zoom.</p>
       </div>
       <div class="strata-controls">
-        <button class="strata-btn active" id="strata-play" onclick="playStrata()"><i class="fa-solid fa-play"></i> Play Layers</button>
+        <button class="strata-btn" id="strata-play" onclick="playStrata()"><i class="fa-solid fa-play"></i> Play Layers</button>
         <button class="strata-btn" onclick="pauseStrata()"><i class="fa-solid fa-pause"></i> Pause</button>
         <button class="strata-btn" onclick="resetStrata()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
         <button class="strata-btn" onclick="stepStrata()"><i class="fa-solid fa-forward-step"></i> Step</button>
       </div>
     </div>
     <div class="strata-legend">
-      <div class="strata-legend-item"><span class="strata-legend-swatch" style="background:#8a7a5a;"></span> Sterile / roof-fall</div>
-      <div class="strata-legend-item"><span class="strata-legend-swatch" style="background:#c8b080;"></span> Occupation layer</div>
+      <div class="strata-legend-item"><span class="strata-legend-swatch" style="background:#8a7a5a;"></span> Fluvial base</div>
+      <div class="strata-legend-item"><span class="strata-legend-swatch" style="background:#c8b080;"></span> Occupation level</div>
       <div class="strata-legend-item"><span class="strata-legend-swatch" style="background:#C85A32;"></span> Hominin fossils</div>
       <div class="strata-legend-item"><span class="strata-legend-swatch" style="background:#8B9DC3;"></span> Lithic tools</div>
       <div class="strata-legend-item"><span class="strata-legend-swatch" style="background:#2E5A44;"></span> Faunal remains</div>
@@ -285,301 +287,105 @@ canvas { display: block; outline: none; }
     <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
       <div id="strata-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
       <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-layer-group"></i> <span id="strata-view-title">STRATIGRAPHIC SEQUENCE</span>
+        <i class="fa-solid fa-layer-group"></i> <span>STRATIGRAPHIC COLUMN</span>
       </div>
       <div class="absolute top-4 right-4 glass-card px-3 py-1.5 rounded-xl text-xs text-parchment-200 font-semibold border border-gold-500/30 shadow-lg z-10">
-        <span id="strata-layer-count">0</span> layers deposited
+        <span id="strata-layer-count">0</span> of 9 levels deposited
       </div>
+      <div class="absolute bottom-3 left-4 right-4 model-note z-10 pointer-events-none">Diagram only. Levels with no verified contents are left empty; dots are illustrative, not excavation counts.</div>
     </div>
     <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
+      <div class="flex items-center justify-between gap-2 pb-3 border-b border-parchment-200/10">
         <h3 id="strata-title" class="font-serif font-bold text-gold-500 text-base">Stratigraphic Formation</h3>
-        <span class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">Taphonomy</span>
+        <span class="text-xs uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">Taphonomy</span>
       </div>
-      <p id="strata-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed">
-        The Hušnjakovo deposit is a ~9-metre sequence built up over ~130,000 years of repeated Neanderthal occupation. Each cycle — procure, transport, knap, hunt, butcher, discard — left a thin layer of debris on the cave floor.
+      <p id="strata-desc" class="mt-4 text-xs text-parchment-200/90 leading-relaxed">
+        Gorjanović-Kramberger divided the Hušnjakovo rock-shelter fill into nine levels, with deposits up to about 11 m deep. ESR dating places the sequence at roughly 130,000 years ago (late MIS 5e), and sedimentation rates suggest it built up in under 10,000 years.
       </p>
       <div class="mt-4 bg-[#11231A]/80 p-3 rounded-xl border border-parchment-200/10">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs uppercase tracking-widest">// Current Layer:</span>
-        <p id="strata-current" class="text-parchment-200/85 leading-relaxed text-xs">Awaiting deposition…</p>
+        <span class="font-semibold text-gold-500 block mb-1 text-xs uppercase tracking-widest">Current level</span>
+        <p id="strata-current" class="text-parchment-200/90 leading-relaxed text-xs">Awaiting deposition…</p>
       </div>
       <div class="mt-3 bg-[#11231A]/80 p-3 rounded-xl border border-parchment-200/10">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs uppercase tracking-widest">// Layer Contents:</span>
-        <ul id="strata-contents" class="list-disc list-inside space-y-1 text-parchment-200/80 text-xs">
+        <span class="font-semibold text-gold-500 block mb-1 text-xs uppercase tracking-widest">Level contents</span>
+        <ul id="strata-contents" class="list-disc list-inside space-y-1 text-parchment-200/90 text-xs">
           <li class="text-parchment-200/50 italic">Press Play to begin</li>
         </ul>
       </div>
       <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p class="text-parchment-200/85 leading-relaxed text-[11px]">
-          Gorjanović-Kramberger, D. (1906). <em>Der diluviale Mensch von Krapina in Kroatien</em>. C.W. Kreidel.
-        </p>
+        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th</span>
+        <p class="text-parchment-200/95 leading-relaxed text-xs" id="strata-apa"></p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ TAB: MORPHOLOGY ============ -->
-<section id="tab-morph" class="flex-1 hidden flex-col space-y-4">
+
+<section id="tab-timeline" class="flex-1 hidden flex-col space-y-4">
   <div class="glass-panel p-4 rounded-2xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-skull"></i> Morphology Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">Cranial · Postcranial · Taurodontism · Sexual dimorphism</p>
-      </div>
-      <div id="morph-buttons" class="flex flex-wrap gap-2"></div>
-    </div>
+    <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2"><i class="fa-solid fa-timeline"></i> Krapina Through Time</h2>
+    <p class="text-xs text-parchment-200/80">From the ~130,000-year-old deposits to modern re-analysis. Click an event, use the arrow keys, or filter by theme.</p>
+    <div id="tl-chips" class="flex flex-wrap gap-2 mt-3"></div>
   </div>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
-    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
-      <div id="morph-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-skull"></i> <span id="morph-view-title">3D Viewer</span>
-      </div>
-    </div>
-    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
-        <h3 id="morph-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
-        <span id="morph-category" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">—</span>
-      </div>
-      <p id="morph-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed"></p>
-      <div id="morph-details" class="mt-3 space-y-2 text-xs"></div>
-      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p id="morph-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
-      </div>
-    </div>
+  <div class="glass-panel rounded-2xl border border-gold-500/20">
+    <div id="tl-track" class="tl-track"></div>
+    <div class="px-4 pb-3"><div style="height:6px;border-radius:3px;background:#ffffff18"><div id="tl-prog" style="height:6px;border-radius:3px;width:0;transition:width .3s;background:linear-gradient(90deg,#C85A32,#D4AF37,#3FA37A,#4C8DF6,#E0559F)"></div></div></div>
   </div>
+  <div id="tl-detail" class="glass-panel rounded-2xl p-4"></div>
 </section>
 
-<!-- ============ TAB: PATHOLOGY ============ -->
-<section id="tab-path" class="flex-1 hidden flex-col space-y-4">
-  <div class="glass-panel p-4 rounded-2xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-heart-pulse"></i> Paleopathology Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">Healed trauma · Bone tumour · Care evidence · Degenerative disease</p>
-      </div>
-      <div id="path-buttons" class="flex flex-wrap gap-2"></div>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
-    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
-      <div id="path-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-heart-pulse"></i> <span id="path-view-title">3D Viewer</span>
-      </div>
-    </div>
-    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
-        <h3 id="path-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
-        <span id="path-category" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">—</span>
-      </div>
-      <p id="path-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed"></p>
-      <div id="path-details" class="mt-3 space-y-2 text-xs"></div>
-      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p id="path-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Lab tabs (morph, path, dental, fauna, lithic, symbolic) are generated by buildLabSections() -->
 
-<!-- ============ TAB: DENTAL ============ -->
-<section id="tab-dental" class="flex-1 hidden flex-col space-y-4">
+<section id="tab-refs" class="flex-1 hidden flex-col space-y-4">
   <div class="glass-panel p-4 rounded-2xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-tooth"></i> Dental Anthropology Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">Taurodontism · Toothpick grooves · Enamel hypoplasia · Ante-mortem fracture</p>
-      </div>
-      <div id="dental-buttons" class="flex flex-wrap gap-2"></div>
-    </div>
+    <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2"><i class="fa-solid fa-book"></i> Reference List</h2>
+    <p class="text-xs text-parchment-200/80">All sources cited in this archive, APA 7th edition, alphabetical by first author. <span id="refs-count"></span></p>
   </div>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
-    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
-      <div id="dental-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-tooth"></i> <span id="dental-view-title">3D Viewer</span>
-      </div>
-    </div>
-    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
-        <h3 id="dental-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
-        <span id="dental-category" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">—</span>
-      </div>
-      <p id="dental-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed"></p>
-      <div id="dental-details" class="mt-3 space-y-2 text-xs"></div>
-      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p id="dental-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
-      </div>
-    </div>
-  </div>
+  <div id="refs-list" class="glass-panel rounded-2xl p-5 border border-gold-500/20"></div>
 </section>
-
-<!-- ============ TAB: FAUNA ============ -->
-<section id="tab-fauna" class="flex-1 hidden flex-col space-y-4">
-  <div class="glass-panel p-4 rounded-2xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-paw"></i> Faunal Assemblage Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">Cave bear · Woolly rhino · Leopard · Elk · Butchery marks</p>
-      </div>
-      <div id="fauna-buttons" class="flex flex-wrap gap-2"></div>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
-    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
-      <div id="fauna-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-paw"></i> <span id="fauna-view-title">3D Viewer</span>
-      </div>
-    </div>
-    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
-        <h3 id="fauna-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
-        <span id="fauna-category" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">—</span>
-      </div>
-      <p id="fauna-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed"></p>
-      <div id="fauna-details" class="mt-3 space-y-2 text-xs"></div>
-      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p id="fauna-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TAB: LITHICS ============ -->
-<section id="tab-lithic" class="flex-1 hidden flex-col space-y-4">
-  <div class="glass-panel p-4 rounded-2xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-gem"></i> Lithic Technology Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">Levallois · Side-scrapers · Points · Denticulates · Raw material economy</p>
-      </div>
-      <div id="lithic-buttons" class="flex flex-wrap gap-2"></div>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
-    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
-      <div id="lithic-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-gem"></i> <span id="lithic-view-title">3D Viewer</span>
-      </div>
-    </div>
-    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
-        <h3 id="lithic-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
-        <span id="lithic-category" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">—</span>
-      </div>
-      <p id="lithic-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed"></p>
-      <div id="lithic-details" class="mt-3 space-y-2 text-xs"></div>
-      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p id="lithic-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TAB: ISOTOPES ============ -->
-<section id="tab-isotope" class="flex-1 hidden flex-col space-y-4">
-  <div class="glass-panel p-4 rounded-2xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-atom"></i> Isotope & Mobility Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">δ¹³C · δ¹⁵N · ⁸⁷Sr/⁸⁶Sr · Diet & landscape use</p>
-      </div>
-      <div id="isotope-buttons" class="flex flex-wrap gap-2"></div>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
-    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
-      <div id="isotope-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-atom"></i> <span id="isotope-view-title">3D Viewer</span>
-      </div>
-    </div>
-    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
-        <h3 id="isotope-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
-        <span id="isotope-category" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">—</span>
-      </div>
-      <p id="isotope-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed"></p>
-      <div id="isotope-details" class="mt-3 space-y-2 text-xs"></div>
-      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p id="isotope-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TAB: SYMBOLIC ============ -->
-<section id="tab-symbolic" class="flex-1 hidden flex-col space-y-4">
-  <div class="glass-panel p-4 rounded-2xl">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-      <div>
-        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2">
-          <i class="fa-solid fa-feather"></i> Symbolic & Mortuary Lab
-        </h2>
-        <p class="text-xs text-parchment-200/80">Eagle talons · Ochre · Dendritic limestone · Cut-marked skull</p>
-      </div>
-      <div id="symbolic-buttons" class="flex flex-wrap gap-2"></div>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
-    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
-      <div id="symbolic-container" class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"></div>
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-xl text-xs text-gold-500 font-semibold border border-gold-500/30 shadow-lg flex items-center gap-2 z-10">
-        <i class="fa-solid fa-feather"></i> <span id="symbolic-view-title">3D Viewer</span>
-      </div>
-    </div>
-    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
-      <div class="flex items-center justify-between pb-3 border-b border-parchment-200/10">
-        <h3 id="symbolic-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
-        <span id="symbolic-category" class="text-[10px] uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100">—</span>
-      </div>
-      <p id="symbolic-desc" class="mt-4 text-xs text-parchment-200/85 leading-relaxed"></p>
-      <div id="symbolic-details" class="mt-3 space-y-2 text-xs"></div>
-      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
-        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th:</span>
-        <p id="symbolic-apa" class="text-parchment-200/85 leading-relaxed text-[11px]"></p>
-      </div>
-    </div>
-  </div>
-</section>
+<div id="lab-sections"></div>
 
 </main>
 
-<!-- CORNER ATTRIBUTION -->
-<div class="fixed bottom-4 right-4 z-40">
+<!-- ATTRIBUTION (in page flow so it never covers content) -->
+<footer class="px-6 pb-6 flex justify-end">
   <div class="glass-panel px-4 py-2.5 rounded-xl border border-gold-500/50 shadow-2xl text-right">
-    <div class="text-[9px] font-bold tracking-widest uppercase text-gold-500">◈ Prototype Sample</div>
-    <div class="text-[10px] font-semibold text-parchment-100">ASIA KHAN, HON. BA (MCMASTER UNIVERSITY)</div>
-    <div class="text-[9px] italic text-parchment-200/70">Behavioral UX Researcher and Design Anthropologist</div>
+    <div class="text-xs font-bold tracking-widest uppercase text-gold-500">◈ Prototype Sample</div>
+    <div class="text-xs font-semibold text-parchment-100">ASIA KHAN, HON. BA (MCMASTER UNIVERSITY)</div>
+    <div class="text-xs italic text-parchment-200/80">Behavioral UX Researcher and Design Anthropologist</div>
   </div>
-</div>
+</footer>
 
 <script>
 /* ============================================================
+   REFERENCES (APA 7th) — each checked against the published record
+   ============================================================ */
+const REF = {
+  gk1906: 'Gorjanović-Kramberger, D. (1906). <em>Der diluviale Mensch von Krapina in Kroatien: Ein Beitrag zur Paläoanthropologie</em>. Kreidel.',
+  gk1913: 'Gorjanović-Kramberger, D. (1913). <em>Život i kultura diluvijalnoga čovjeka iz Krapine u Hrvatskoj</em> (Djela Jugoslavenske akademije znanosti i umjetnosti, Vol. 23). Knjižara Jugoslavenske akademije.',
+  rink1995: 'Rink, W. J., Schwarcz, H. P., Smith, F. H., & Radovčić, J. (1995). ESR ages for Krapina hominids. <em>Nature, 378</em>, 24. https://doi.org/10.1038/378024a0',
+  simek1997: 'Simek, J. F., & Smith, F. H. (1997). Chronological changes in stone tool assemblages from Krapina (Croatia). <em>Journal of Human Evolution, 32</em>(6), 561–575. https://doi.org/10.1006/jhev.1996.0129',
+  zupanic1970: 'Zupanič, J. (1970). Petrografska istraživanja paleolitskih artefakata krapinskog nalazišta. In M. Malez (Ed.), <em>Krapina 1899–1969</em> (pp. 131–140). Jugoslavenska akademija znanosti i umjetnosti.',
+  malez1970: 'Malez, M. (1970). Novi pogledi na stratigrafiju krapinskog nalazišta. In M. Malez (Ed.), <em>Krapina 1899–1969</em> (pp. 13–44). Jugoslavenska akademija znanosti i umjetnosti.',
+  radovcic2015: 'Radovčić, D., Sršen, A. O., Radovčić, J., & Frayer, D. W. (2015). Evidence for Neandertal jewelry: Modified white-tailed eagle claws at Krapina. <em>PLoS ONE, 10</em>(3), Article e0119802. https://doi.org/10.1371/journal.pone.0119802',
+  radovcic2016: 'Radovčić, D., Japundžić, D., Oros Sršen, A., Radovčić, J., & Frayer, D. W. (2016). An interesting rock from Krapina. <em>Comptes Rendus Palevol, 15</em>(8), 988–993. https://doi.org/10.1016/j.crpv.2016.04.013',
+  monge2013: 'Monge, J., Kricun, M., Radovčić, J., Radovčić, D., Mann, A., & Frayer, D. W. (2013). Fibrous dysplasia in a 120,000+ year old Neandertal from Krapina, Croatia. <em>PLoS ONE, 8</em>(6), Article e64539. https://doi.org/10.1371/journal.pone.0064539',
+  caspari2006: 'Caspari, R., & Radovčić, J. (2006). New reconstruction of Krapina 5, a male Neandertal cranial vault from Krapina, Croatia. <em>American Journal of Physical Anthropology, 130</em>(3), 294–307. https://doi.org/10.1002/ajpa.20282',
+  dumancic1999: 'Dumančić, J., Kaić, Z., Brkić, H., & Petrovečki, M. (1999). Tooth pulp dimensions and taurodontism in Krapina Neanderthals. In <em>The Krapina Neandertals and human evolution in Central Europe: Book of abstracts</em> (pp. 21–22). Krapina–Zagreb, Croatia.',
+  frayer1987: 'Frayer, D. W., & Russell, M. D. (1987). Artificial grooves on the Krapina Neanderthal teeth. <em>American Journal of Physical Anthropology, 74</em>(3), 393–406. https://doi.org/10.1002/ajpa.1330740311',
+  frayer2017: 'Frayer, D. W., Gatti, J., Monge, J., & Radovčić, D. (2017). Prehistoric dentistry? P4 rotation, partial M3 impaction, toothpick grooves and other signs of manipulation in Krapina Dental Person 20. <em>Bulletin of the International Association for Paleodontology, 11</em>(1), 1–10.',
+  frayer2006: 'Frayer, D. W., Orschiedt, J., Cook, J., Russell, M. D., & Radovčić, J. (2006). Krapina 3: Cut marks and ritual behavior? <em>Periodicum Biologorum, 108</em>(4), 519–524.',
+  russell1987: 'Russell, M. D. (1987). Mortuary practices at the Krapina Neandertal site. <em>American Journal of Physical Anthropology, 72</em>(3), 381–397. https://doi.org/10.1002/ajpa.1330720311',
+  trinkaus1985: 'Trinkaus, E. (1985). Cannibalism and burial at Krapina. <em>Journal of Human Evolution, 14</em>(2), 203–216.',
+  miracle2007: 'Miracle, P. T. (2007). <em>The Krapina Paleolithic site</em>. Croatian Natural History Museum.',
+  miracle2011: 'Miracle, P. T. (2011). Sex and size of the Krapina cave bears. In B. Toškan (Ed.), <em>Fragments of ice age environments: Proceedings in honour of Ivan Turk\'s jubilee</em>. Založba ZRC.'
+};
+const refs = (...k) => k.map(x => REF[x]).join('<br><br>');
+
+/* ============================================================
    TABS
    ============================================================ */
-const TABS = ['gis','strata','morph','path','dental','fauna','lithic','isotope','symbolic'];
+const TABS = ['gis','strata','timeline','morph','path','dental','fauna','lithic','symbolic','refs'];
 const LAB_STATE = {};
 const LAB_INIT_FLAG = {};
 
@@ -589,23 +395,25 @@ function switchTab(id){
     const n = document.getElementById(`nav-${t}`);
     if(n){ n.classList.remove('bg-terracotta-600','text-parchment-100','shadow-md'); n.classList.add('bg-parchment-800/80','text-parchment-200'); }
   });
-  const target = document.getElementById(`tab-${id}`); if(target) target.classList.remove('hidden');
+  const target = document.getElementById(`tab-${id}`);
+  if(target){ target.classList.remove('hidden'); if(id !== 'gis') target.classList.add('flex'); }
   const n = document.getElementById(`nav-${id}`);
   if(n){ n.classList.remove('bg-parchment-800/80','text-parchment-200'); n.classList.add('bg-terracotta-600','text-parchment-100','shadow-md'); }
 
+  // wait for layout so the container has a real size before three.js reads it
   setTimeout(()=>{
     if(id === 'gis'){
       if(!LAB_INIT_FLAG.gis){ initGIS(); LAB_INIT_FLAG.gis = true; }
       else if(gisMap) gisMap.resize();
     } else if(id === 'strata'){
       if(!LAB_INIT_FLAG.strata){ initStrata(); LAB_INIT_FLAG.strata = true; }
-      else if(LAB_STATE.strata) resizeR(LAB_STATE.strata.renderer, LAB_STATE.strata.camera, document.getElementById('strata-container'));
+      else resizeR(strataState.renderer, strataState.camera, document.getElementById('strata-container'));
     } else if(!LAB_INIT_FLAG[id] && LAB_DATA[id]){
       initLab(id); LAB_INIT_FLAG[id] = true;
     } else if(LAB_STATE[id]){
       resizeR(LAB_STATE[id].renderer, LAB_STATE[id].camera, document.getElementById(`${id}-container`));
     }
-  }, 80);
+  }, 120);
 }
 
 function resizeR(r,c,el){
@@ -618,32 +426,33 @@ function resizeR(r,c,el){
    GIS NODES
    ============================================================ */
 const gisNodes = [
-  {name:"Krapina Cave (Hušnjakovo)",culture:"Rock shelter · ~130 ka",lat:46.1667,lng:15.8667,
-   desc:"Primary occupation site. 900+ human fossil fragments (~70 individuals), 1,200+ Mousterian lithics, 2,300+ faunal remains in a 9-metre sequence.",
-   context:"Yellow Miocene sandstone, ~8 m high. Ash and sand layers preserve controlled fire.",
-   evidence:["Hominin fossils","Mousterian tools","Faunal assemblage","Fire features"],
-   distance:"0 km (site itself)",
-   apa:"Gorjanović-Kramberger, D. (1906). Der diluviale Mensch von Krapina in Kroatien. C.W. Kreidel."},
-  {name:"Local Flint / Radiolarite",culture:"Immediate vicinity",lat:46.18,lng:15.88,
-   desc:"Most lithic raw material is local flint, radiolarite, and quartz from stream cobbles within a few km of the cave.",
-   context:"Fluvial cobbles from nearby streams. Cobble wedge method used to produce backed blades.",
-   evidence:["Local flint","Radiolarite","Quartz"],
-   distance:"~2–5 km",
-   apa:"Monnier, G., Tostevin, G. B., et al. (2016). Nova istraživanja paleolitskog nalazišta Krapina. Godišnjak ANUBiH, 45, 45–70."},
-  {name:"Imported Stone Sources",culture:"Northern highlands",lat:46.35,lng:15.75,
-   desc:"Small proportion of lithics made on non-local stone from the northern mountains, indicating occasional long-distance transport.",
-   context:"Krapinica River brought hard flint from adjacent mountains. Broken into thick pieces before transport.",
-   evidence:["Non-local flint","Jasper","Chalcedony"],
-   distance:"~15–30 km",
-   apa:"Gorjanović-Kramberger, D. (1913). Život i kultura diluvijalnog čovjeka iz Krapine u Hrvatskoj. Djela JAZU."},
-  {name:"Faunal Procurement Zone",culture:"Hrvatsko Zagorje",lat:46.15,lng:15.92,
-   desc:"Landscape from which cave bear, woolly rhino, leopard, and elk were hunted or scavenged. 2,300+ faunal remains in the assemblage.",
-   context:"Interglacial MIS 5e environment — temperate forest with river valleys and cave systems.",
-   evidence:["Cave bear (Ursus spelaeus)","Woolly rhinoceros","Leopard (Panthera pardus)","Elk (Cervus elaphus)"],
-   distance:"~5–20 km",
-   apa:"Malez, M. (1978). Stratigrafski, paleontološki i paleoklimatski odnosi. In Krapina 1899–1969. JAZU."}
+  {name:"Krapina Rock Shelter (Hušnjakovo)",culture:"Rock shelter · ~130 ka",lat:46.1647,lng:15.8636,
+   desc:"Primary occupation site, excavated 1899–1905. Roughly 870–900 hominin remains from at least 70 individuals, 1,191 lithic artifacts, and almost 2,800 animal remains were recovered from a nine-level sequence. The shelter was emptied of sediment soon after excavation.",
+   context:"Rock shelter in Miocene sandstone on Hušnjakovo Hill, about 55 km north of Zagreb. Hearths were recorded at several levels. ESR dating places the deposits at about 130 ka (late MIS 5e).",
+   evidence:["Neandertal fossils","Mousterian lithics","Faunal assemblage","Hearths"],
+   distance:"0 km (site itself; position from published coordinates)",
+   apa: refs('gk1906','rink1995')},
+  {name:"Local River-Cobble Sources",culture:"Immediate vicinity · approximate",lat:46.18,lng:15.88,
+   desc:"Most Krapina stone tools were made on local river cobbles. Tuffs and silicified tuffs make up about 65% of the raw material and chert about 23%. Only a small share of tools arrived as finished pieces; most were made on site.",
+   context:"Cobble sources are river gravels within the Krapina catchment. Both the Levallois method and a cobble-wedge method were used. Zone position on the map is illustrative.",
+   evidence:["Tuff / silicified tuff","Chert","River cobbles"],
+   distance:"Local (zone placed ~2–3 km away for display only)",
+   apa: refs('simek1997','zupanic1970')},
+  {name:"Non-Local Stone (Limestone Outcrops)",culture:"North of the site · approximate",lat:46.2,lng:15.87,
+   desc:"Some non-local materials occur in the lithic assemblage. A split limestone rock with dark dendritic patterns is thought to have come from outcrops a few kilometres north of Krapina, and was collected but not made into a tool.",
+   context:"Biopelmicritic grey limestone outcrops are the proposed source for the dendritic rock; the shelter itself is sandstone. Source areas for other non-local lithics are not precisely located.",
+   evidence:["Dendritic limestone rock","Some non-local lithic material"],
+   distance:"A few km north (proposed source of the limestone rock)",
+   apa: refs('radovcic2016','simek1997')},
+  {name:"Faunal Procurement Zone",culture:"Hrvatsko Zagorje · interpretive",lat:46.15,lng:15.92,
+   desc:"Landscape from which the Krapina animal remains derive. Rhinoceros (21.7%), bears (17.0%) and beaver (17.9% of the bones, mostly from the fluvial base) dominate, with bison/aurochs at 7.5%.",
+   context:"The fauna points to a warm interglacial setting (late MIS 5e) with forest and river valleys. Zone placement is an interpretive device, not mapped data.",
+   evidence:["Merck's rhinoceros","Cave bear (Ursus spelaeus)","Beaver (Castor fiber)","Bison / aurochs"],
+   distance:"Interpretive zone, roughly 5–10 km for display",
+   apa: refs('miracle2007','radovcic2015')}
 ];
 
+function gisButtons(){ document.getElementById('gis-nodes').innerHTML = gisNodes.map((s,i)=>`<button onclick="gisGo(${i})" class="map-timeline-btn" style="text-align:left;border-color:${GIS_COL[i]}"><span style="color:${GIS_COL[i]}">●</span> ${GIS_SHORT[i]}</button>`).join(''); }
 function updateGIS(i){
   const s = gisNodes[i];
   document.getElementById('gis-site-title').innerText = s.name;
@@ -656,7 +465,7 @@ function updateGIS(i){
 }
 
 /* ============================================================
-   GIS MAP — with labels layer + toggle
+   GIS MAP
    ============================================================ */
 let gisMap = null;
 let gisTilted = false;
@@ -664,6 +473,10 @@ let labelsVisible = true;
 let cycleInterval = null;
 let cycleProgress = 0;
 let activeNodeMarkers = {};
+const GIS_COL = ['#E0663A','#8BB4F0','#F0C93B','#3FC48A'];
+const GIS_SHORT = ['Krapina Rock Shelter','River-cobble sources','Limestone outcrops','Faunal zone'];
+function gisFit(dur){ const b=new maplibregl.LngLatBounds(); gisNodes.forEach(s=>b.extend([s.lng,s.lat])); gisMap.fitBounds(b,{padding:{top:90,bottom:150,left:90,right:90},pitch:35,bearing:0,duration:dur,maxZoom:13}); }
+function gisGo(i){ const s=gisNodes[i]; updateGIS(i); gisMap.flyTo({center:[s.lng,s.lat],zoom:13,duration:1200}); }
 
 function initGIS(){
   const el = document.getElementById('gis-map');
@@ -675,35 +488,16 @@ function initGIS(){
     style: {
       version: 8,
       sources: {
-        'satellite': {
-          type: 'raster',
-          tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
-          tileSize: 256,
-          attribution: 'Imagery © Esri, Maxar, Earthstar Geographics'
-        },
-        'labels': {
-          type: 'raster',
-          tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
-          tileSize: 256,
-          attribution: 'Labels © Esri'
-        },
-        'terrain-dem': {
-          type: 'raster-dem',
-          tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
-          encoding: 'terrarium', tileSize: 256, maxzoom: 14
-        }
+        'satellite': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, attribution: 'Imagery © Esri, Maxar, Earthstar Geographics' },
+        'labels': { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, attribution: 'Labels © Esri' },
+        'terrain-dem': { type: 'raster-dem', tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'], encoding: 'terrarium', tileSize: 256, maxzoom: 14 }
       },
       layers: [
         { id: 'sat', type: 'raster', source: 'satellite' },
         { id: 'labels', type: 'raster', source: 'labels', paint: { 'raster-opacity': 0.9 } }
       ]
     },
-    center: [15.87, 46.17],
-    zoom: 10,
-    pitch: 45,
-    bearing: -15,
-    maxPitch: 85,
-    antialias: true
+    center: [15.87, 46.17], zoom: 10, pitch: 45, bearing: -15, maxPitch: 85, antialias: true
   });
 
   gisMap.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
@@ -716,54 +510,50 @@ function initGIS(){
     gisNodes.forEach((s, i) => {
       const el = document.createElement('div');
       el.className = 'beacon-pulse';
-      el.dataset.nodeName = s.name;
-      el.innerHTML = `<svg viewBox="0 0 24 24"><circle class="core" cx="12" cy="12" r="8"/></svg>`;
+      const col = GIS_COL[i];
+      el.innerHTML = `<svg viewBox="0 0 24 24"><circle class="core" cx="12" cy="12" r="8" style="fill:${col}"/></svg><div class="gis-lbl" style="border-color:${col}">${GIS_SHORT[i]}</div>`;
+      el.style.filter = `drop-shadow(0 0 8px ${col}) drop-shadow(0 0 14px ${col})`;
       el.title = s.name;
 
       const popupHTML = `
-        <div style="max-width:300px;font-family:'Inter',sans-serif;">
-          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#C85A32;font-weight:700;margin-bottom:5px;">${s.culture}</div>
-          <div style="font-size:14px;font-weight:700;color:#FDFBF7;margin-bottom:8px;font-family:'Merriweather',serif;">${s.name}</div>
-          <div style="font-size:11px;color:#F4EFE6;line-height:1.55;">${s.desc}</div>
+        <div style="max-width:320px;font-family:'Inter',sans-serif;">
+          <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#E8794F;font-weight:700;margin-bottom:5px;">${s.culture}</div>
+          <div style="font-size:16px;font-weight:700;color:#FDFBF7;margin-bottom:8px;font-family:'Merriweather',serif;">${s.name}</div>
+          <div style="font-size:14px;color:#F7F3EA;line-height:1.6;">${s.desc}</div>
         </div>`;
 
-      const popup = new maplibregl.Popup({ offset:25, closeButton:true, maxWidth:'320px', className:'site-popup' }).setHTML(popupHTML);
-      new maplibregl.Marker({ element: el, anchor:'center' })
-        .setLngLat([s.lng, s.lat])
-        .setPopup(popup)
-        .addTo(gisMap);
+      const popup = new maplibregl.Popup({ offset:25, closeButton:true, maxWidth:'340px', className:'site-popup' }).setHTML(popupHTML);
+      new maplibregl.Marker({ element: el, anchor:'center' }).setLngLat([s.lng, s.lat]).setPopup(popup).addTo(gisMap);
 
       el.addEventListener('click', e => { e.stopPropagation(); updateGIS(i); });
       activeNodeMarkers[s.name] = el;
     });
 
+    gisButtons();
+    gisFit(0);
     updateGIS(0);
+    resetCycle();
   });
 }
 
 function toggleLabels(){
   if(!gisMap) return;
   labelsVisible = !labelsVisible;
-  const vis = labelsVisible ? 'visible' : 'none';
-  if(gisMap.getLayer('labels')){
-    gisMap.setLayoutProperty('labels', 'visibility', vis);
-  }
+  if(gisMap.getLayer('labels')) gisMap.setLayoutProperty('labels', 'visibility', labelsVisible ? 'visible' : 'none');
   const btn = document.getElementById('labels-btn');
   if(btn){
-    btn.innerHTML = labelsVisible
-      ? '<i class="fa-solid fa-tag"></i> Labels'
-      : '<i class="fa-solid fa-tag" style="opacity:0.4"></i> Labels';
+    btn.innerHTML = '<i class="fa-solid fa-tag"></i> Labels';
     btn.style.opacity = labelsVisible ? '1' : '0.6';
   }
 }
 
 const CYCLE_STEPS = [
-  { label: "Procurement", site: "Local Flint / Radiolarite" },
-  { label: "Transport", site: "Krapina Cave (Hušnjakovo)" },
-  { label: "Knapping", site: "Krapina Cave (Hušnjakovo)" },
+  { label: "Procurement", site: "Local River-Cobble Sources" },
+  { label: "Transport", site: "Krapina Rock Shelter (Hušnjakovo)" },
+  { label: "Knapping", site: "Krapina Rock Shelter (Hušnjakovo)" },
   { label: "Hunting", site: "Faunal Procurement Zone" },
-  { label: "Butchery", site: "Krapina Cave (Hušnjakovo)" },
-  { label: "Discard", site: "Krapina Cave (Hušnjakovo)" }
+  { label: "Butchery", site: "Krapina Rock Shelter (Hušnjakovo)" },
+  { label: "Discard", site: "Krapina Rock Shelter (Hušnjakovo)" }
 ];
 
 function resetCycle(){
@@ -773,28 +563,20 @@ function resetCycle(){
   document.getElementById('map-fill').style.width = '0%';
   Object.entries(activeNodeMarkers).forEach(([name, el]) => {
     el.classList.remove('activated');
-    el.style.opacity = name === 'Local Flint / Radiolarite' ? '1' : '0.4';
+    el.style.opacity = '1';
   });
-  if(activeNodeMarkers['Local Flint / Radiolarite']) activeNodeMarkers['Local Flint / Radiolarite'].classList.add('activated');
+  if(activeNodeMarkers['Local River-Cobble Sources']) activeNodeMarkers['Local River-Cobble Sources'].classList.add('activated');
 }
 
 function playCycle(){
-  if(cycleInterval) return;
-  const stepMs = 1300;
+  if(cycleInterval || !gisMap) return;
+  if(cycleProgress >= CYCLE_STEPS.length) resetCycle();
   cycleInterval = setInterval(() => {
-    if(cycleProgress >= CYCLE_STEPS.length){
-      clearInterval(cycleInterval); cycleInterval = null;
-      return;
-    }
+    if(cycleProgress >= CYCLE_STEPS.length){ clearInterval(cycleInterval); cycleInterval = null; return; }
     const step = CYCLE_STEPS[cycleProgress];
     document.getElementById('map-year').innerText = step.label;
     document.getElementById('map-fill').style.width = ((cycleProgress + 1) / CYCLE_STEPS.length * 100) + '%';
-
-    Object.entries(activeNodeMarkers).forEach(([name, el]) => {
-      el.classList.remove('activated');
-      el.style.opacity = '0.4';
-    });
-
+    Object.values(activeNodeMarkers).forEach(el => { el.classList.remove('activated'); el.style.opacity = '0.8'; });
     const target = gisNodes.find(n => n.name === step.site);
     if(target && activeNodeMarkers[target.name]){
       activeNodeMarkers[target.name].classList.add('activated');
@@ -802,7 +584,7 @@ function playCycle(){
       gisMap.easeTo({ center: [target.lng, target.lat], duration: 800, essential: true });
     }
     cycleProgress++;
-  }, stepMs);
+  }, 1300);
 }
 
 function pauseCycle(){ if(cycleInterval){ clearInterval(cycleInterval); cycleInterval = null; } }
@@ -812,723 +594,486 @@ function locateMe(){
   if(!navigator.geolocation){ alert('Geolocation not supported.'); return; }
   if(location.protocol === 'file:'){ alert('Run from a local server or host online.'); return; }
   navigator.geolocation.getCurrentPosition(
-    (pos)=>{
-      gisMap.flyTo({ center:[pos.coords.longitude, pos.coords.latitude], zoom:14, pitch:60, duration:2600, essential:true });
-    },
+    (pos)=>{ gisMap.flyTo({ center:[pos.coords.longitude, pos.coords.latitude], zoom:14, pitch:60, duration:2600, essential:true }); },
     ()=>{ alert('Could not get your location.'); }
   );
 }
-
-function toggleTilt(){
-  if(!gisMap) return;
-  gisTilted = !gisTilted;
-  gisMap.easeTo({ pitch: gisTilted ? 70 : 0, duration: 1200 });
-}
-
-function resetGlobeCamera(){
-  if(!gisMap) return;
-  gisTilted = false;
-  gisMap.flyTo({ center:[15.87,46.17], zoom:10, pitch:45, bearing:-15, duration:2200 });
-}
+function toggleTilt(){ if(!gisMap) return; gisTilted = !gisTilted; gisMap.easeTo({ pitch: gisTilted ? 70 : 0, duration: 1200 }); }
+function resetGlobeCamera(){ if(!gisMap) return; gisTilted = false; gisFit(2000); }
 
 /* ============================================================
-   STRATIGRAPHY ANIMATION
+   STRATIGRAPHY (fixed)
+   Root cause of the invisible scene: the old camera helper re-read
+   camera.position.length() every frame and added a +2 offset, so the
+   camera drifted away until the fog hid everything. The camera now
+   keeps its own fixed distance (dist) and nothing drifts.
    ============================================================ */
-let strataState = {
+const STRATA_BASE_Y = -2.7;
+const STRATA_STEP = 0.6;
+const STRATA_H = 0.55;
+
+const strataState = {
   scene: null, camera: null, renderer: null,
   layers: [], artifacts: [], currentIndex: 0,
-  interval: null, playing: false, autoRotate: true
+  interval: null, playing: false, autoRotate: true,
+  angle: 0.7, elevation: 0.42, dist: 17,
+  target: null
 };
 
+/* Levels follow Gorjanović-Kramberger's nine-level scheme. Contents are drawn from
+   Radovčić et al. (2015), Simek & Smith (1997) and Karavanić's review; dot counts are illustrative. */
 const LAYER_TEMPLATES = [
-  { name: "Layer 1 — Earliest occupation", age: "~130,000 BP", color: 0xa89070,
-    contents: ["First Mousterian flakes", "Cave bear bones", "Ash lens"],
-    hominin: 1, lithics: 12, fauna: 8 },
-  { name: "Layer 2 — Dense occupation", age: "~128,000 BP", color: 0xc8b080,
-    contents: ["Levallois cores", "Butchered elk bones", "Hammerstones"],
-    hominin: 2, lithics: 28, fauna: 15 },
-  { name: "Layer 3 — Tool workshop", age: "~126,000 BP", color: 0xd4b888,
-    contents: ["Side-scraper production", "Flake debris", "Fire-cracked rock"],
-    hominin: 0, lithics: 45, fauna: 6 },
-  { name: "Layer 4 — Hominin fossils", age: "~124,000 BP", color: 0xc0a878,
-    contents: ["Fragmented hominin remains", "Cut-marked bone", "Mousterian points"],
-    hominin: 8, lithics: 22, fauna: 12 },
-  { name: "Layer 5 — Butchery event", age: "~122,000 BP", color: 0xb8a070,
-    contents: ["Woolly rhino bones", "Cut marks", "Denticulates"],
-    hominin: 0, lithics: 15, fauna: 24 },
-  { name: "Layer 6 — Symbolic deposit", age: "~120,000 BP", color: 0xd0b888,
-    contents: ["Eagle talon fragments", "Ochre-stained bone", "Levallois flakes"],
-    hominin: 3, lithics: 18, fauna: 9 },
-  { name: "Layer 7 — Dense lithic scatter", age: "~118,000 BP", color: 0xc4ac7c,
-    contents: ["Cores and flakes", "Retouched tools", "Burnt bone"],
-    hominin: 1, lithics: 38, fauna: 11 },
-  { name: "Layer 8 — Carnivore denning", age: "~115,000 BP", color: 0x9a8a6a,
-    contents: ["Cave bear tooth marks", "Hyena coprolites", "Few tools"],
-    hominin: 0, lithics: 4, fauna: 30 },
-  { name: "Layer 9 — Reoccupation", age: "~112,000 BP", color: 0xc8b080,
-    contents: ["Fresh lithic industry", "Butchered deer", "Fire features"],
-    hominin: 2, lithics: 32, fauna: 14 },
-  { name: "Layer 10 — Final occupation", age: "~110,000 BP", color: 0xd0b888,
-    contents: ["Late Mousterian tools", "Hominin fragments", "Mixed fauna"],
-    hominin: 4, lithics: 25, fauna: 10 },
-  { name: "Layer 11 — Roof collapse", age: "~108,000 BP", color: 0x8a7a5a,
-    contents: ["Sterile sediment", "Limestone blocks", "Sealing layer"],
-    hominin: 0, lithics: 0, fauna: 2 }
+  { name: "Level 1 — Fluvial base", age: "MIS 5e · ~130 ka", color: 0x8a7a5a,
+    contents: ["River gravel and sand at the base of the shelter", "Most beaver (Castor fiber) bones come from this fluvial base"],
+    hominin: 0, lithics: 0, fauna: 8 },
+  { name: "Level 2 — Early occupation", age: "MIS 5e · ~130 ka", color: 0xb59c72,
+    contents: ["No level-specific contents could be verified in the sources consulted"],
+    hominin: 0, lithics: 0, fauna: 0 },
+  { name: "Level 3 — Lithic-rich occupation", age: "MIS 5e · ~130 ka", color: 0xc8b080,
+    contents: ["No level-specific contents could be verified in the sources consulted"],
+    hominin: 0, lithics: 0, fauna: 0 },
+  { name: "Level 4 — Main hominin level", age: "MIS 5e · ~130 ka", color: 0xc0a878,
+    contents: ["Most Neandertal remains come from this level (Gorjanović-Kramberger's \"Homo sapiens zone\")", "Fragmented hominin bones"],
+    hominin: 10, lithics: 0, fauna: 0 },
+  { name: "Level 5 — Occupation debris", age: "MIS 5e · ~130 ka", color: 0xb8a070,
+    contents: ["No level-specific contents could be verified in the sources consulted"],
+    hominin: 0, lithics: 0, fauna: 0 },
+  { name: "Level 6 — Occupation debris", age: "MIS 5e · ~130 ka", color: 0xd0b888,
+    contents: ["No level-specific contents could be verified in the sources consulted"],
+    hominin: 0, lithics: 0, fauna: 0 },
+  { name: "Level 7 — Occupation debris", age: "MIS 5e · ~130 ka", color: 0xc4ac7c,
+    contents: ["No level-specific contents could be verified in the sources consulted"],
+    hominin: 0, lithics: 0, fauna: 0 },
+  { name: "Level 8 — Cave-bear zone (upper levels)", age: "MIS 5e · ~130 ka", color: 0xa89070,
+    contents: ["Gorjanović-Kramberger's \"Ursus spelaeus zone\": abundant cave bear", "Eight white-tailed eagle talons and a phalanx come from the top of the sequence", "At least one hearth; a few Mousterian tools, mainly Levallois blanks and backed knives"],
+    hominin: 0, lithics: 0, fauna: 14 },
+  { name: "Level 9 — Uppermost deposits", age: "MIS 5e · ~130 ka", color: 0xd4bc8e,
+    contents: ["Levels 8 and 9 are often lumped together today", "The eagle-talon assemblage comes from the uppermost level"],
+    hominin: 0, lithics: 0, fauna: 10 }
 ];
+
+function strataCam(){
+  const s = strataState;
+  s.camera.position.set(
+    Math.sin(s.angle) * Math.cos(s.elevation) * s.dist,
+    Math.sin(s.elevation) * s.dist,
+    Math.cos(s.angle) * Math.cos(s.elevation) * s.dist
+  );
+  s.camera.lookAt(s.target);
+}
 
 function initStrata(){
   const el = document.getElementById('strata-container');
   if(!el) return;
   const w = Math.max(el.clientWidth, 400);
   const h = Math.max(el.clientHeight, 500);
+  const s = strataState;
+  s.target = new THREE.Vector3(0, 0, 0);
+
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0b1711);
-  scene.fog = new THREE.FogExp2(0x0b1711, 0.03);
+  scene.background = new THREE.Color(0x0e1d15);   // no fog: nothing can wash out
 
-  const camera = new THREE.PerspectiveCamera(45, w/h, 0.1, 1000);
-  camera.position.set(6, 8, 12);
-  camera.lookAt(0, 0, 0);
-
+  const camera = new THREE.PerspectiveCamera(45, w/h, 0.1, 200);
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(w, h);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(w, h, false);
   el.appendChild(renderer.domElement);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-  const key = new THREE.DirectionalLight(0xfff5e6, 1.3); key.position.set(8, 15, 10); scene.add(key);
-  const fill = new THREE.PointLight(0xC85A32, 0.9, 40); fill.position.set(-10, 5, -5); scene.add(fill);
-  const rim = new THREE.PointLight(0xD4AF37, 0.7, 40); rim.position.set(10, -5, -10); scene.add(rim);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+  const key = new THREE.DirectionalLight(0xfff5e6, 1.2); key.position.set(8, 15, 10); scene.add(key);
+  const fill = new THREE.PointLight(0xC85A32, 0.8, 60); fill.position.set(-10, 5, -5); scene.add(fill);
+  const rim = new THREE.PointLight(0xD4AF37, 0.6, 60); rim.position.set(10, -5, -10); scene.add(rim);
 
-  const gridHelper = new THREE.GridHelper(14, 14, 0x1e3748, 0x132431);
-  gridHelper.position.y = -3.5;
-  scene.add(gridHelper);
+  // visible floor grid
+  const grid = new THREE.GridHelper(16, 16, 0x8a7a4a, 0x35503f);
+  grid.position.y = STRATA_BASE_Y - 0.05;
+  scene.add(grid);
 
-  strataState.scene = scene;
-  strataState.camera = camera;
-  strataState.renderer = renderer;
-  strataState.layers = [];
-  strataState.artifacts = [];
+  // ghost outline of the full nine-level column, so the scene is never empty
+  const total = LAYER_TEMPLATES.length * STRATA_STEP;
+  const ghostGeo = new THREE.BoxGeometry(8, total, 8);
+  const ghost = new THREE.LineSegments(new THREE.EdgesGeometry(ghostGeo), new THREE.LineBasicMaterial({ color: 0xD4AF37, transparent: true, opacity: 0.55 }));
+  ghost.position.y = STRATA_BASE_Y + total/2;
+  scene.add(ghost);
+  for(let i = 1; i < LAYER_TEMPLATES.length; i++){
+    const gl = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(8, 0.001, 8)), new THREE.LineBasicMaterial({ color: 0xD4AF37, transparent: true, opacity: 0.18 }));
+    gl.position.y = STRATA_BASE_Y + i * STRATA_STEP;
+    scene.add(gl);
+  }
 
-  let dragging = false, prevX = 0, prevY = 0;
-  let angle = 0.6, elevation = 0.4;
-  renderer.domElement.addEventListener('mousedown', e => { dragging = true; prevX = e.clientX; prevY = e.clientY; strataState.autoRotate = false; });
-  window.addEventListener('mouseup', () => { dragging = false; });
-  window.addEventListener('mousemove', e => {
+  s.scene = scene; s.camera = camera; s.renderer = renderer;
+  s.layers = []; s.artifacts = [];
+  strataCam();
+
+  // pointer interaction (mouse + touch)
+  let dragging = false, px = 0, py = 0;
+  renderer.domElement.addEventListener('pointerdown', e => { dragging = true; px = e.clientX; py = e.clientY; s.autoRotate = false; try{ renderer.domElement.setPointerCapture(e.pointerId); }catch(_){} });
+  window.addEventListener('pointerup', () => { dragging = false; });
+  window.addEventListener('pointermove', e => {
     if(!dragging) return;
-    angle += (e.clientX - prevX) * 0.01;
-    elevation = Math.max(0.1, Math.min(1.4, elevation + (e.clientY - prevY) * 0.005));
-    prevX = e.clientX; prevY = e.clientY;
-    updateStrataCamera();
+    s.angle -= (e.clientX - px) * 0.008;
+    s.elevation = Math.max(0.05, Math.min(1.45, s.elevation + (e.clientY - py) * 0.006));
+    px = e.clientX; py = e.clientY;
+    strataCam();
   });
   renderer.domElement.addEventListener('wheel', e => {
     e.preventDefault();
-    const dist = Math.max(6, Math.min(25, camera.position.length() + e.deltaY * 0.01));
-    camera.position.setLength(dist);
+    s.dist = Math.max(9, Math.min(32, s.dist + e.deltaY * 0.015));
+    strataCam();
   }, { passive: false });
-
-  function updateStrataCamera(){
-    const dist = camera.position.length();
-    camera.position.set(
-      Math.sin(angle) * Math.cos(elevation) * dist,
-      Math.sin(elevation) * dist + 2,
-      Math.cos(angle) * Math.cos(elevation) * dist
-    );
-    camera.lookAt(0, 0, 0);
-  }
-  strataState.updateCamera = updateStrataCamera;
 
   (function loop(){
     requestAnimationFrame(loop);
-    if(strataState.autoRotate){
-      angle += 0.002;
-      updateStrataCamera();
-    }
+    if(s.autoRotate){ s.angle += 0.003; strataCam(); }
     renderer.render(scene, camera);
   })();
 
   if(window.ResizeObserver) new ResizeObserver(() => resizeR(renderer, camera, el)).observe(el);
+  resizeR(renderer, camera, el);
+
+  document.getElementById('strata-apa').innerHTML = refs('gk1906','radovcic2015','simek1997','rink1995','malez1970');
+  setTimeout(playStrata, 700);   // start building as soon as the tab opens
+}
+
+function disposeObj(o){
+  o.traverse(c => {
+    if(c.geometry) c.geometry.dispose();
+    if(c.material) Array.isArray(c.material) ? c.material.forEach(m => m.dispose()) : c.material.dispose();
+  });
 }
 
 function stepStrata(){
-  if(strataState.currentIndex >= LAYER_TEMPLATES.length){
-    document.getElementById('strata-current').innerText = "All layers deposited. The sequence is complete.";
+  const s = strataState;
+  if(!s.scene) return;
+  if(s.currentIndex >= LAYER_TEMPLATES.length){
+    document.getElementById('strata-current').innerText = "All nine levels are in place. Press Reset to watch it again.";
     return;
   }
-  const tpl = LAYER_TEMPLATES[strataState.currentIndex];
-  const layerY = -3.2 + strataState.currentIndex * 0.6;
-  const layerHeight = 0.55;
+  const tpl = LAYER_TEMPLATES[s.currentIndex];
+  const cy = STRATA_BASE_Y + s.currentIndex * STRATA_STEP + STRATA_STEP/2;
 
-  const layerGeo = new THREE.BoxGeometry(8, layerHeight, 8);
-  const layerMat = new THREE.MeshStandardMaterial({
-    color: tpl.color, roughness: 0.95, transparent: true, opacity: 0
-  });
-  const layer = new THREE.Mesh(layerGeo, layerMat);
-  layer.position.y = layerY;
-  strataState.scene.add(layer);
-  strataState.layers.push(layer);
+  const geo = new THREE.BoxGeometry(8, STRATA_H, 8);
+  const mat = new THREE.MeshStandardMaterial({ color: tpl.color, roughness: 0.95, transparent: true, opacity: 0 });
+  const layer = new THREE.Mesh(geo, mat);
+  layer.position.y = cy;
+  layer.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: 0x3a2c1c })));
+  s.scene.add(layer);
+  s.layers.push(layer);
 
   let fade = 0;
-  const fadeInterval = setInterval(() => {
+  const fi = setInterval(() => {
     fade += 0.08;
-    if(fade >= 1){ fade = 1; clearInterval(fadeInterval); }
-    layerMat.opacity = 0.85 * fade;
+    if(fade >= 1){ fade = 1; clearInterval(fi); }
+    mat.opacity = 0.55 * fade;
   }, 30);
 
-  const layerArtifacts = [];
+  const items = [];
+  const rnd = () => (Math.random() - 0.5);
   for(let i = 0; i < tpl.lithics; i++){
-    const geo = new THREE.SphereGeometry(0.05 + Math.random()*0.04, 6, 4);
-    const mat = new THREE.MeshStandardMaterial({ color: 0x8B9DC3, emissive: 0x2a3a5a, emissiveIntensity: 0.4 });
-    const flake = new THREE.Mesh(geo, mat);
-    flake.position.set((Math.random()-0.5)*7, layerY + layerHeight/2 + 0.02 + Math.random()*0.15, (Math.random()-0.5)*7);
-    flake.scale.set(1, 0.3, 1);
-    strataState.scene.add(flake);
-    layerArtifacts.push(flake);
+    const f = new THREE.Mesh(new THREE.SphereGeometry(0.07 + Math.random()*0.05, 8, 6), new THREE.MeshStandardMaterial({ color: 0x9fb3dc, emissive: 0x2a3a5a, emissiveIntensity: 0.5 }));
+    f.position.set(rnd()*7, cy + rnd()*0.4, rnd()*7); f.scale.set(1, 0.4, 1);
+    s.scene.add(f); items.push(f);
   }
   for(let i = 0; i < tpl.hominin; i++){
-    const geo = new THREE.SphereGeometry(0.08, 8, 6);
-    const mat = new THREE.MeshStandardMaterial({ color: 0xC85A32, emissive: 0x5a2010, emissiveIntensity: 0.6 });
-    const fossil = new THREE.Mesh(geo, mat);
-    fossil.position.set((Math.random()-0.5)*6, layerY + layerHeight/2 + 0.05, (Math.random()-0.5)*6);
-    strataState.scene.add(fossil);
-    layerArtifacts.push(fossil);
+    const f = new THREE.Mesh(new THREE.SphereGeometry(0.13, 10, 8), new THREE.MeshStandardMaterial({ color: 0xE0663A, emissive: 0x7a2a10, emissiveIntensity: 0.7 }));
+    f.position.set(rnd()*6, cy + rnd()*0.3, rnd()*6);
+    s.scene.add(f); items.push(f);
   }
   for(let i = 0; i < tpl.fauna; i++){
-    const geo = new THREE.BoxGeometry(0.08, 0.05, 0.15);
-    const mat = new THREE.MeshStandardMaterial({ color: 0x2E5A44, emissive: 0x102a1a, emissiveIntensity: 0.4 });
-    const bone = new THREE.Mesh(geo, mat);
-    bone.position.set((Math.random()-0.5)*7, layerY + layerHeight/2 + 0.02, (Math.random()-0.5)*7);
-    bone.rotation.y = Math.random() * Math.PI;
-    strataState.scene.add(bone);
-    layerArtifacts.push(bone);
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.08, 0.26), new THREE.MeshStandardMaterial({ color: 0x3f8a64, emissive: 0x143a24, emissiveIntensity: 0.5 }));
+    b.position.set(rnd()*7, cy + rnd()*0.4, rnd()*7); b.rotation.y = Math.random()*Math.PI;
+    s.scene.add(b); items.push(b);
   }
-  strataState.artifacts.push(layerArtifacts);
+  s.artifacts.push(items);
 
-  document.getElementById('strata-layer-count').innerText = strataState.currentIndex + 1;
+  s.currentIndex++;
+  document.getElementById('strata-layer-count').innerText = s.currentIndex;
   document.getElementById('strata-title').innerText = tpl.name;
   document.getElementById('strata-current').innerHTML = `<b>${tpl.name}</b><br><span class="text-gold-500">${tpl.age}</span>`;
-  document.getElementById('strata-contents').innerHTML = tpl.contents.map(c => `<li>${c}</li>`).join('') +
-    `<li class="text-gold-500 mt-1">+ ${tpl.lithics} lithics · ${tpl.hominin} hominin · ${tpl.fauna} fauna</li>`;
-
-  strataState.currentIndex++;
+  document.getElementById('strata-contents').innerHTML = tpl.contents.map(c => `<li>${c}</li>`).join('');
 }
 
 function playStrata(){
-  if(strataState.playing) return;
-  strataState.playing = true;
+  const s = strataState;
+  if(s.playing || !s.scene) return;
+  if(s.currentIndex >= LAYER_TEMPLATES.length) resetStrata();
+  s.playing = true;
   document.getElementById('strata-play').classList.add('active');
-  strataState.interval = setInterval(() => {
-    if(strataState.currentIndex >= LAYER_TEMPLATES.length){
-      clearInterval(strataState.interval);
-      strataState.interval = null;
-      strataState.playing = false;
+  stepStrata();
+  s.interval = setInterval(() => {
+    if(s.currentIndex >= LAYER_TEMPLATES.length){
+      clearInterval(s.interval); s.interval = null; s.playing = false;
       document.getElementById('strata-play').classList.remove('active');
       return;
     }
     stepStrata();
-  }, 1400);
-  stepStrata();
+  }, 1500);
 }
 
 function pauseStrata(){
-  if(strataState.interval){ clearInterval(strataState.interval); strataState.interval = null; }
-  strataState.playing = false;
+  const s = strataState;
+  if(s.interval){ clearInterval(s.interval); s.interval = null; }
+  s.playing = false;
   document.getElementById('strata-play').classList.remove('active');
 }
 
 function resetStrata(){
+  const s = strataState;
   pauseStrata();
-  strataState.layers.forEach(l => {
-    strataState.scene.remove(l);
-    l.geometry.dispose();
-    l.material.dispose();
-  });
-  strataState.artifacts.flat().forEach(a => {
-    strataState.scene.remove(a);
-    a.geometry.dispose();
-    a.material.dispose();
-  });
-  strataState.layers = [];
-  strataState.artifacts = [];
-  strataState.currentIndex = 0;
+  s.layers.forEach(l => { s.scene.remove(l); disposeObj(l); });
+  s.artifacts.flat().forEach(a => { s.scene.remove(a); disposeObj(a); });
+  s.layers = []; s.artifacts = []; s.currentIndex = 0;
   document.getElementById('strata-layer-count').innerText = '0';
   document.getElementById('strata-title').innerText = 'Stratigraphic Formation';
   document.getElementById('strata-current').innerText = 'Awaiting deposition…';
   document.getElementById('strata-contents').innerHTML = '<li class="text-parchment-200/50 italic">Press Play to begin</li>';
-  strataState.autoRotate = true;
+  s.autoRotate = true;
 }
 
 /* ============================================================
-   3D MESH BUILDERS
+   LAB DATA — text limited to what the cited sources state.
+   Images: only figures whose URLs and open licence were verified
+   (PLoS ONE, CC BY). Other entries link to the original paper.
    ============================================================ */
-function krapinaSkull(){
-  const g = new THREE.Group();
-  const boneMat = new THREE.MeshStandardMaterial({ color: 0xE8DCC8, roughness: 0.65 });
-  const vault = new THREE.Mesh(new THREE.SphereGeometry(1.05, 32, 24), boneMat);
-  vault.scale.set(0.85, 1.0, 1.05); vault.position.y = 0.35; g.add(vault);
-  const brow = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.15, 0.35), boneMat);
-  brow.position.set(0, 0.18, 1.02); g.add(brow);
-  for(let i=0;i<2;i++){
-    const orbit = new THREE.Mesh(new THREE.SphereGeometry(0.26,16,12), new THREE.MeshStandardMaterial({ color:0x1a1a1a, roughness:0.9 }));
-    orbit.position.set((i-0.5)*0.62, 0.18, 0.88); orbit.scale.set(1,1,0.7); g.add(orbit);
-  }
-  const nasal = new THREE.Mesh(new THREE.ConeGeometry(0.18,0.4,8), new THREE.MeshStandardMaterial({ color:0x1a1a1a }));
-  nasal.position.set(0,0.0,1.02); nasal.rotation.x = Math.PI; g.add(nasal);
-  const maxilla = new THREE.Mesh(new THREE.BoxGeometry(1.15,0.4,0.8), boneMat);
-  maxilla.position.set(0,-0.4,0.55); maxilla.rotation.x = 0.1; g.add(maxilla);
-  const mandible = new THREE.Mesh(new THREE.BoxGeometry(1.25,0.35,0.6), boneMat);
-  mandible.position.set(0,-0.85,0.7); g.add(mandible);
-  for(let i=0;i<10;i++){
-    const t = (i/9-0.5)*1.0;
-    const tooth = new THREE.Mesh(new THREE.BoxGeometry(0.09,0.16,0.1), new THREE.MeshPhysicalMaterial({ color:0xf0e8d8, clearcoat:1 }));
-    tooth.position.set(t,-0.7,0.9); g.add(tooth);
-  }
-  const bun = new THREE.Mesh(new THREE.SphereGeometry(0.35,16,12), boneMat);
-  bun.position.set(0,0.05,-1.1); bun.scale.set(1.2,0.9,0.7); g.add(bun);
-  return g;
-}
+const LAB_META = {
+  morph:   { icon:'fa-skull',       title:'Morphology Lab',          sub:'Cranial vault · Taurodontism' },
+  path:    { icon:'fa-heart-pulse', title:'Paleopathology Lab',      sub:'Bone tumour (fibrous dysplasia)' },
+  dental:  { icon:'fa-tooth',       title:'Dental Anthropology Lab', sub:'Taurodontism · Toothpick grooves' },
+  fauna:   { icon:'fa-paw',         title:'Faunal Assemblage Lab',   sub:"Cave bear · Merck's rhinoceros · Beaver · Bison/aurochs" },
+  lithic:  { icon:'fa-gem',         title:'Lithic Technology Lab',   sub:'Levallois · Side-scrapers · Backed knives · Raw material' },
+  symbolic:{ icon:'fa-feather',     title:'Symbolic & Mortuary Lab', sub:'Eagle talons · Dendritic limestone · Cut-marked cranium' }
+};
 
-function taurodontTooth(){
-  const g = new THREE.Group();
-  const enamelMat = new THREE.MeshPhysicalMaterial({ color: 0xf0e8d8, roughness: 0.15, clearcoat: 1 });
-  const dentineMat = new THREE.MeshStandardMaterial({ color: 0xe0d0b0, roughness: 0.55 });
-  const pulpMat = new THREE.MeshStandardMaterial({ color: 0xA0431E, roughness: 0.4, emissive: 0x5a2010, emissiveIntensity: 0.6 });
-  const crown = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.7, 1.4), enamelMat);
-  crown.position.y = 0.8; g.add(crown);
-  [[-0.5,1.15,-0.4],[0.5,1.15,-0.4],[-0.5,1.15,0.4],[0.5,1.15,0.4]].forEach(p=>{
-    const cusp = new THREE.Mesh(new THREE.SphereGeometry(0.28,16,12), enamelMat);
-    cusp.position.set(p[0],p[1],p[2]); cusp.scale.set(1,0.7,1); g.add(cusp);
-  });
-  for(let i=0;i<2;i++){
-    const root = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.25,0.6,16), dentineMat);
-    root.position.set((i-0.5)*0.5, 0.1, 0); g.add(root);
-  }
-  const pulp = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.9, 0.9), pulpMat);
-  pulp.position.y = 0.55; g.add(pulp);
-  return g;
-}
+const doi = d => ({ label: 'Open the paper', url: 'https://doi.org/' + d });
+const P15 = 'https://cdn.ncbi.nlm.nih.gov/pmc/blobs/61a1/4356571/';
+const talonImg = (hash, n, cap) => ({
+  src: `${P15}${hash}/pone.0119802.g00${n}.jpg`,
+  caption: cap,
+  credit: 'Radovčić et al. (2015), PLoS ONE 10(3): e0119802, Fig ' + n + '. CC BY.',
+  link: 'https://doi.org/10.1371/journal.pone.0119802'
+});
 
-function healedRib(){
-  const g = new THREE.Group();
-  const boneMat = new THREE.MeshStandardMaterial({ color: 0xE8DCC8, roughness: 0.6 });
-  const callusMat = new THREE.MeshStandardMaterial({ color: 0xC8A878, roughness: 0.75 });
-  const ribCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-1.5, 0, 0), new THREE.Vector3(-1.0, 0.3, 0.2),
-    new THREE.Vector3(0, 0.4, 0.3), new THREE.Vector3(1.0, 0.3, 0.2),
-    new THREE.Vector3(1.5, 0, 0)
-  ]);
-  const rib = new THREE.Mesh(new THREE.TubeGeometry(ribCurve, 40, 0.12, 10, false), boneMat);
-  g.add(rib);
-  const callus = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 12), callusMat);
-  callus.position.set(0.2, 0.4, 0.28); callus.scale.set(1.4,0.9,1.0); g.add(callus);
-  const lesion = new THREE.Mesh(new THREE.SphereGeometry(0.18, 14, 10), new THREE.MeshStandardMaterial({ color:0xB8621B, roughness:0.5, emissive:0x5a2010, emissiveIntensity:0.4 }));
-  lesion.position.set(-0.6, 0.32, 0.25); lesion.scale.set(1.2,0.8,1.0); g.add(lesion);
-  return g;
-}
-
-function caveBear(){
-  const g = new THREE.Group();
-  const furMat = new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.9 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), furMat);
-  body.scale.set(1.8, 1.0, 1.0); g.add(body);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.6, 20, 14), furMat);
-  head.position.set(1.7, 0.35, 0); head.scale.set(1.1, 1.0, 1.0); g.add(head);
-  const snout = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.5, 12), furMat);
-  snout.position.set(2.2, 0.25, 0); snout.rotation.z = -Math.PI/2; g.add(snout);
-  for(let i=0;i<2;i++){
-    const ear = new THREE.Mesh(new THREE.SphereGeometry(0.2, 12, 10), new THREE.MeshStandardMaterial({ color:0x8a6a4a }));
-    ear.position.set(1.7, 0.85, (i-0.5)*0.4); ear.scale.set(1,1,0.4); g.add(ear);
-  }
-  [[-1.2,-0.9,0.5],[-1.2,-0.9,-0.5],[0.8,-0.9,0.5],[0.8,-0.9,-0.5]].forEach(p=>{
-    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.18,1.0,12), furMat);
-    leg.position.set(p[0],p[1],p[2]); g.add(leg);
-  });
-  return g;
-}
-
-function woollyRhino(){
-  const g = new THREE.Group();
-  const skinMat = new THREE.MeshStandardMaterial({ color: 0x6a5a4a, roughness: 0.85 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), skinMat);
-  body.scale.set(1.9, 1.2, 1.2); g.add(body);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.7, 18, 14), skinMat);
-  head.position.set(2.0, 0.4, 0); head.scale.set(1.1, 0.9, 0.9); g.add(head);
-  const horn = new THREE.Mesh(new THREE.ConeGeometry(0.15, 1.4, 12), new THREE.MeshStandardMaterial({ color:0xd8c8a8, roughness:0.5 }));
-  horn.position.set(1.8, 1.3, 0); horn.rotation.z = -0.3; g.add(horn);
-  [[-1.2,-1.2,0.6],[-1.2,-1.2,-0.6],[1.0,-1.2,0.6],[1.0,-1.2,-0.6]].forEach(p=>{
-    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.2,1.4,12), skinMat);
-    leg.position.set(p[0],p[1],p[2]); g.add(leg);
-  });
-  return g;
-}
-
-function leopard(){
-  const g = new THREE.Group();
-  const furMat = new THREE.MeshStandardMaterial({ color: 0xC8A878, roughness: 0.8 });
-  const spotMat = new THREE.MeshStandardMaterial({ color: 0x2a1a0a, roughness: 0.9 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(0.85, 24, 16), furMat);
-  body.scale.set(1.8, 0.8, 0.9); g.add(body);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.5, 18, 14), furMat);
-  head.position.set(1.5, 0.15, 0); head.scale.set(1.0, 1.0, 0.9); g.add(head);
-  for(let i=0;i<20;i++){
-    const spot = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 6), spotMat);
-    spot.position.set(-1.2 + Math.random()*2.4, -0.3 + Math.random()*0.6, (Math.random()-0.5)*0.8);
-    g.add(spot);
-  }
-  const tailCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-1.5,0,0), new THREE.Vector3(-2.0,0.3,0),
-    new THREE.Vector3(-2.4,0.0,0), new THREE.Vector3(-2.7,0.4,0)
-  ]);
-  const tail = new THREE.Mesh(new THREE.TubeGeometry(tailCurve, 20, 0.08, 8, false), furMat);
-  g.add(tail);
-  return g;
-}
-
-function elk(){
-  const g = new THREE.Group();
-  const furMat = new THREE.MeshStandardMaterial({ color: 0x8a5a3a, roughness: 0.85 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(0.9, 24, 16), furMat);
-  body.scale.set(1.7, 1.0, 1.0); g.add(body);
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 1.0, 12), furMat);
-  neck.position.set(1.2, 0.7, 0); neck.rotation.z = 0.4; g.add(neck);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.4, 16, 12), furMat);
-  head.position.set(1.7, 1.2, 0); g.add(head);
-  for(let i=0;i<2;i++){
-    const antlerMat = new THREE.MeshStandardMaterial({ color:0xC8A878, roughness:0.5 });
-    const antler = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.03,0.8,8), antlerMat);
-    antler.position.set(1.6, 1.6, (i-0.5)*0.25);
-    antler.rotation.z = (i-0.5)*0.5; g.add(antler);
-    for(let j=0;j<3;j++){
-      const tine = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.02,0.3,6), antlerMat);
-      tine.position.set(1.5 + j*0.1, 1.9 + j*0.1, (i-0.5)*0.25);
-      tine.rotation.z = 0.8; g.add(tine);
-    }
-  }
-  [[-0.9,-0.9,0.5],[-0.9,-0.9,-0.5],[0.9,-0.9,0.5],[0.9,-0.9,-0.5]].forEach(p=>{
-    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.08,1.4,10), furMat);
-    leg.position.set(p[0],p[1],p[2]); g.add(leg);
-  });
-  return g;
-}
-
-function levalloisFlake(){
-  const g = new THREE.Group();
-  const flintMat = new THREE.MeshPhysicalMaterial({ color: 0x8B9DC3, roughness: 0.3, clearcoat: 0.8 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), flintMat);
-  body.scale.set(1, 0.25, 1.4); g.add(body);
-  for(let i=0;i<3;i++){
-    const ridge = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.02,1.6,6), flintMat);
-    ridge.position.set((i-1)*0.35, 0.18, 0);
-    ridge.rotation.x = Math.PI/2; g.add(ridge);
-  }
-  return g;
-}
-
-function sideScraper(){
-  const g = new THREE.Group();
-  const flintMat = new THREE.MeshPhysicalMaterial({ color: 0x9BADC9, roughness: 0.35, clearcoat: 0.7 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), flintMat);
-  body.scale.set(1.2, 0.3, 0.9); g.add(body);
-  const edgeMat = new THREE.MeshStandardMaterial({ color: 0x7A8FB5, roughness: 0.6 });
-  for(let i=0;i<8;i++){
-    const angle = (i/8) * Math.PI - Math.PI/2;
-    const tooth = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.15, 4), edgeMat);
-    tooth.position.set(Math.cos(angle)*1.1, 0.05, Math.sin(angle)*0.8);
-    tooth.rotation.x = Math.PI/2; tooth.rotation.z = -angle; g.add(tooth);
-  }
-  return g;
-}
-
-function mousterianPoint(){
-  const g = new THREE.Group();
-  const flintMat = new THREE.MeshPhysicalMaterial({ color: 0xA8B8D0, roughness: 0.25, clearcoat: 0.9 });
-  const shape = new THREE.Shape();
-  shape.moveTo(0, 1.2); shape.lineTo(-0.6, -0.8); shape.lineTo(0.6, -0.8); shape.closePath();
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.3, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.1, bevelSegments: 4 });
-  const point = new THREE.Mesh(geo, flintMat);
-  point.rotation.x = -Math.PI/2; point.position.y = -0.15; g.add(point);
-  return g;
-}
-
-function denticulate(){
-  const g = new THREE.Group();
-  const flintMat = new THREE.MeshPhysicalMaterial({ color: 0x8B9DC3, roughness: 0.3, clearcoat: 0.7 });
-  const body = new THREE.Mesh(new THREE.SphereGeometry(0.9, 20, 14), flintMat);
-  body.scale.set(1.4, 0.22, 1); g.add(body);
-  const toothMat = new THREE.MeshStandardMaterial({ color: 0x7088B0, roughness: 0.5 });
-  for(let i=0;i<10;i++){
-    const t = i/9;
-    const tooth = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.18, 4), toothMat);
-    tooth.position.set(-1.2 + t*2.4, 0.05, 0.95);
-    tooth.rotation.x = Math.PI/2; g.add(tooth);
-  }
-  return g;
-}
-
-function isotopeBars(){
-  const g = new THREE.Group();
-  const bars = [1.5,2.2,2.8,3.4,2.6,1.9,1.4,1.1];
-  bars.forEach((h,i)=>{
-    const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,h,0.5), new THREE.MeshStandardMaterial({ color:0xD4AF37, roughness:0.4, emissive:0x5a4010, emissiveIntensity:0.5 }));
-    b.position.set((i-bars.length/2+0.5)*0.7, h/2-1.5, 0);
-    g.add(b);
-  });
-  return g;
-}
-
-function strontiumMap(){
-  const g = new THREE.Group();
-  const plate = new THREE.Mesh(new THREE.BoxGeometry(4,0.2,4), new THREE.MeshStandardMaterial({ color:0x11231A, roughness:0.7 }));
-  g.add(plate);
-  for(let i=0;i<8;i++){
-    for(let j=0;j<8;j++){
-      const x = -1.7 + i*0.5, z = -1.7 + j*0.5;
-      const localRatio = Math.sin(i*0.7)*Math.cos(j*0.7);
-      const color = localRatio > 0.3 ? 0xD4AF37 : (localRatio < -0.3 ? 0xC85A32 : 0x2E5A44);
-      const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.4,8), new THREE.MeshStandardMaterial({ color, emissive:color, emissiveIntensity:0.4 }));
-      pin.position.set(x, 0.3, z); g.add(pin);
-    }
-  }
-  return g;
-}
-
-function eagleTalon(){
-  const g = new THREE.Group();
-  const boneMat = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.4, metalness: 0.3 });
-  const keratinMat = new THREE.MeshPhysicalMaterial({ color: 0x1a1a1a, roughness: 0.2, clearcoat: 1 });
-  const curve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0, 0, 0), new THREE.Vector3(0.2, 0.4, 0.1),
-    new THREE.Vector3(0.5, 0.7, 0.15), new THREE.Vector3(0.9, 0.8, 0.1),
-    new THREE.Vector3(1.2, 0.6, 0.0)
-  ]);
-  const talon = new THREE.Mesh(new THREE.TubeGeometry(curve, 30, 0.08, 8, false), keratinMat);
-  g.add(talon);
-  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 0.3, 12), boneMat);
-  base.position.set(0, -0.1, 0); g.add(base);
-  const ochreMat = new THREE.MeshBasicMaterial({ color: 0xB8621B });
-  for(let i=0;i<3;i++){
-    const mark = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.018, 6, 12), ochreMat);
-    mark.rotation.x = Math.PI/2;
-    mark.position.set(0.05 + i*0.08, 0.15 + i*0.15, 0.05 + i*0.03);
-    g.add(mark);
-  }
-  return g;
-}
-
-function carvedLimestone(){
-  const g = new THREE.Group();
-  const stoneMat = new THREE.MeshStandardMaterial({ color: 0x8a7a6a, roughness: 0.85 });
-  const stone = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.35, 1.3), stoneMat);
-  g.add(stone);
-  const veinMat = new THREE.MeshBasicMaterial({ color: 0x2a1a0a });
-  for(let i=0;i<6;i++){
-    const branchCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-0.6 + i*0.25, 0.18, -0.4),
-      new THREE.Vector3(-0.4 + i*0.25, 0.19, -0.1),
-      new THREE.Vector3(-0.3 + i*0.25, 0.2, 0.2),
-      new THREE.Vector3(-0.5 + i*0.25, 0.19, 0.5)
-    ]);
-    const branch = new THREE.Mesh(new THREE.TubeGeometry(branchCurve, 15, 0.02, 5, false), veinMat);
-    g.add(branch);
-  }
-  return g;
-}
-
-function cutSkull(){
-  const g = new THREE.Group();
-  const boneMat = new THREE.MeshStandardMaterial({ color: 0xddd0b8, roughness: 0.6 });
-  const cutMat = new THREE.MeshStandardMaterial({ color: 0xA0431E, roughness: 0.4 });
-  const vault = new THREE.Mesh(new THREE.SphereGeometry(1.0, 24, 16, 0, Math.PI, 0, Math.PI/2), boneMat);
-  vault.rotation.x = -Math.PI/2; vault.scale.set(0.9, 0.6, 1.1); g.add(vault);
-  for(let i=0;i<5;i++){
-    const cut = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.02, 0.04), cutMat);
-    cut.position.set(-0.3 + i*0.15, 0.1, 0.5 + i*0.05);
-    cut.rotation.y = 0.3 + i*0.1; g.add(cut);
-  }
-  return g;
-}
-
-/* ============================================================
-   LAB DATA
-   ============================================================ */
 const LAB_DATA = {
   morph: { models: [
-    { title: "Krapina Cranium (Krapina 3)", category: "Cranial Morphology", desc: "Cranium of a young adult female. Shows classic Neanderthal features: large cranial capacity (~1,600 cc), pronounced brow ridge, receding forehead, occipital bun, and prognathic mid-face.",
+    { title: "Krapina 5 Cranial Vault", category: "Cranial Morphology",
+      desc: "Krapina 5 is an adult male cranial vault, newly reconstructed by Caspari and Radovčić (2006) and compared with Krapina females and with later Neandertal males.",
       details: [
-        { label: "Cranial capacity", value: "~1,600 cc" },
-        { label: "Brow ridge", value: "Pronounced supraorbital torus" },
-        { label: "Occipital bun", value: "Present" },
-        { label: "Significance", value: "Key specimen for Neanderthal cranial anatomy" }
+        { label: "Specimen", value: "Krapina 5 — adult male cranial vault" },
+        { label: "Findings", value: "Differs from later Neandertal males in cranial thickness, height and sagittal curvature, but fits the male Neandertal range for most other measurements, including cranial capacity" },
+        { label: "Sample context", value: "The Krapina sample has a disproportionate number of females and/or young individuals" },
+        { label: "Variation", value: "Considerable cranial variation at Krapina; some, but clearly not all, is attributed to sexual dimorphism" }
       ],
-      apa: "Caspari, R., & Radovčić, J. (2006). New reconstruction of Krapina 3. Periodicum Biologorum, 108(3), 293–302.",
-      build: krapinaSkull },
-    { title: "Taurodont Molar", category: "Dental Morphology", desc: "Neanderthal molars frequently show taurodontism — enlarged pulp chambers with short, fused roots, providing extra chewing surface as crowns wear down.",
+      images: [], links: [doi('10.1002/ajpa.20282')],
+      apa: refs('caspari2006') },
+    { title: "Taurodont Molar", category: "Dental Morphology",
+      desc: "Taurodontism is an enlargement of the pulp chamber into the root. In a radiographic study of 27 Krapina permanent lower molars, 70.4% were taurodont, and none of the modern comparison molars were. The mandible scan is a cast of a Krapina specimen.",
       details: [
         { label: "Trait", value: "Taurodontism" },
-        { label: "Frequency", value: "Common in Neanderthals" },
-        { label: "Significance", value: "Diagnostic Neanderthal dental trait" }
+        { label: "Method", value: "Periapical radiographs of Krapina molars" },
+        { label: "Sample", value: "27 permanent lower molars (11 M1, 6 M2, 10 M3) versus 36 modern patients as controls" },
+        { label: "Result", value: "Median taurodontic index 44 (Krapina) versus 9 (modern), p < 0.001" }
       ],
-      apa: "Kallay, J. (1963). A radiographic study of the Neanderthal teeth from Krapina. In Dental Anthropology. Pergamon Press.",
-      build: taurodontTooth }
+      images: [], links: [],
+      apa: refs('dumancic1999') }
   ]},
   path: { models: [
-    { title: "Healed Rib Fracture + Tumour", category: "Paleopathology", desc: "A fossilized rib from Krapina shows fibrous dysplasia — the oldest known bone tumour in the human fossil record (>120,000 years old).",
+    { title: "Rib with Fibrous Dysplasia", category: "Paleopathology",
+      desc: "Rib fragment 120.71 preserves a fibrous dysplastic lesion, the first definitive case of this tumour in a Neandertal. The tumour predates other evidence for these kinds of tumour by well over 100,000 years.",
       details: [
-        { label: "Lesion", value: "Fibrous dysplasia (oldest bone tumour)" },
-        { label: "Age", value: ">120,000 years" },
-        { label: "Significance", value: "Neanderthals experienced neoplastic disease" }
+        { label: "Specimen", value: "Rib 120.71, an incomplete fragment (left rib, near the vertebral end) with no associated skeletal elements" },
+        { label: "Diagnosis", value: "Fibrous dysplasia, the most common benign rib tumour in living humans" },
+        { label: "Age", value: "More than 120,000 years" },
+        { label: "Caveat", value: "The authors do not comment on health effects, because the rib is incomplete" }
       ],
-      apa: "Monge, J., Kricun, M., Radovčić, J., Radovčić, D., & Mann, A. (2013). Fibrous dysplasia in a 120,000+ year old Neandertal from Krapina. PLoS ONE, 8(5), e64539.",
-      build: healedRib }
+      images: [], links: [doi('10.1371/journal.pone.0064539')],
+      apa: refs('monge2013') }
   ]},
   dental: { models: [
-    { title: "Taurodont Molar (Detailed)", category: "Dental Anthropology", desc: "Cross-section of a Krapina molar showing taurodontism. One of the largest Neanderthal dental collections.",
+    { title: "Taurodontism", category: "Dental Anthropology",
+      desc: "Radiographs of Krapina lower molars show enlarged pulp chambers (taurodontism). The mandible scan is a cast of a Krapina specimen.",
       details: [
-        { label: "Sample", value: "One of largest Neanderthal dental collections" },
         { label: "Trait", value: "Taurodontism" },
-        { label: "Significance", value: "Window into diet and tooth use" }
+        { label: "Sample", value: "27 permanent lower molars (11 M1, 6 M2, 10 M3) versus 36 modern patients as controls" },
+        { label: "Result", value: "Median taurodontic index 44 (Krapina) versus 9 (modern), p < 0.001" }
       ],
-      apa: "Kallay, J. (1963). A radiographic study of the Neanderthal teeth from Krapina. In Dental Anthropology. Pergamon Press.",
-      build: taurodontTooth },
-    { title: "Toothpick Groove", category: "Dental Intervention", desc: "A Krapina molar shows six toothpick grooves and scratches — evidence of self-treatment for a painful impacted premolar. Among the oldest evidence of dental intervention.",
+      images: [], links: [],
+      apa: refs('dumancic1999') },
+    { title: "Toothpick Grooves (KDP 20)", category: "Dental Behaviour",
+      desc: "Four associated mandibular teeth (Krapina Dental Person 20) show six toothpick grooves, scratches and chips, together with a rotated premolar and a partly impacted M3. The authors read the pattern as likely self-treatment of a dental problem.",
       details: [
-        { label: "Individual", value: "Krapina 5" },
-        { label: "Feature", value: "6 toothpick grooves + scratches" },
-        { label: "Significance", value: "Earliest known dental intervention" }
+        { label: "Individual", value: "Krapina Dental Person 20 (four left mandibular teeth, P4–M3)" },
+        { label: "Features", value: "Six toothpick grooves, scratches on the P4, and chips on the tongue side" },
+        { label: "Wider sample", value: "A 1987 study reported artificial grooves on 14 Krapina teeth from ten individuals" },
+        { label: "Context", value: "Toothpick grooves are known in much older hominins, about 1.8 million years ago" }
       ],
-      apa: "Frayer, D. W., & Russell, M. D. (1987). Artificial grooves on the Krapina Neanderthal teeth. American Journal of Physical Anthropology, 74(3), 393–405.",
-      build: taurodontTooth }
+      images: [], links: [{ label: 'Open the paper', url: 'https://hrcak.srce.hr/file/270132' }],
+      apa: refs('frayer2017','frayer1987') }
   ]},
   fauna: { models: [
-    { title: "Cave Bear (Ursus spelaeus)", category: "Faunal Assemblage", desc: "Cave bear remains dominate the Krapina fauna. Some bones show butchery marks; others may represent natural cave deaths.",
+    { title: "Cave Bear (Ursus spelaeus)", category: "Faunal Assemblage",
+      desc: "Bears make up about 17% of the Krapina fauna by minimum number of individuals. The Krapina male cave bears are small, which Miracle reads as an adaptation to a full interglacial climate. The uppermost levels were called the Ursus spelaeus zone.",
       details: [
         { label: "Species", value: "Ursus spelaeus" },
-        { label: "Count", value: "Most abundant taxon" },
-        { label: "Significance", value: "Debate over hunting vs. scavenging" }
+        { label: "Share", value: "~17.0% of minimum number of individuals" },
+        { label: "Climate signal", value: "Small body size fits a warm interglacial; the sequence is judged to have built up in under 10,000 years" }
       ],
-      apa: "Malez, M. (1978). Stratigrafski, paleontološki i paleoklimatski odnosi. In Krapina 1899–1969. JAZU.",
-      build: caveBear },
-    { title: "Woolly Rhinoceros (Coelodonta)", category: "Faunal Assemblage", desc: "Woolly rhinoceros remains indicate cold, open steppe-tundra environments during glacial periods.",
+      images: [], links: [doi('10.1371/journal.pone.0119802')],
+      apa: refs('miracle2007','miracle2011','radovcic2015') },
+    { title: "Merck's Rhinoceros", category: "Faunal Assemblage",
+      desc: "Rhinoceros is the most numerous large mammal at Krapina (about 22% of individuals). It is Merck's rhinoceros, a warm-climate species. Karavanić reports that the Krapina Neandertals appear to have hunted it. Woolly rhinoceros is not part of the fauna.",
       details: [
-        { label: "Species", value: "Coelodonta antiquitatis" },
-        { label: "Environment", value: "Cold steppe-tundra" },
-        { label: "Significance", value: "Cold-climate hunting" }
+        { label: "Species", value: "Merck's rhinoceros" },
+        { label: "Share", value: "~21.7% of minimum number of individuals" },
+        { label: "Cut marks", value: "In the 25-taxon mammal listing, 4.1% show stone-tool cut marks and 13.6% show burning" }
       ],
-      apa: "Malez, M. (1978). Stratigrafski, paleontološki i paleoklimatski odnosi. In Krapina 1899–1969. JAZU.",
-      build: woollyRhino },
-    { title: "Leopard (Panthera pardus)", category: "Faunal Assemblage", desc: "Leopard remains at Krapina. These large carnivores competed with Neanderthals for prey and cave shelters.",
+      images: [], links: [doi('10.1371/journal.pone.0119802')],
+      apa: refs('miracle2007','radovcic2015') },
+    { title: "Beaver (Castor fiber)", category: "Faunal Assemblage",
+      desc: "Beaver is a major component of the Krapina fauna (about 18% of the bones). Most beaver bones come from the fluvial base of the shelter.",
       details: [
-        { label: "Species", value: "Panthera pardus" },
-        { label: "Role", value: "Competitor predator" },
-        { label: "Significance", value: "Human-carnivore interaction" }
+        { label: "Species", value: "Castor fiber" },
+        { label: "Share", value: "~17.9% of the bones from the site" },
+        { label: "Position", value: "Mostly from the fluvial base of the shelter" }
       ],
-      apa: "Malez, M. (1978). Stratigrafski, paleontološki i paleoklimatski odnosi. In Krapina 1899–1969. JAZU.",
-      build: leopard },
-    { title: "Elk (Cervus elaphus)", category: "Faunal Assemblage", desc: "Elk remains indicate temperate forest environments. Likely a key prey species during interglacial periods.",
+      images: [], links: [doi('10.1371/journal.pone.0119802')],
+      apa: refs('miracle2007','radovcic2015') },
+    { title: "Bison / Aurochs (Bos/Bison)", category: "Faunal Assemblage",
+      desc: "Wild cattle make up about 7.5% of the Krapina fauna by minimum number of individuals, alongside smaller numbers of pig, deer and small carnivores.",
       details: [
-        { label: "Species", value: "Cervus elaphus" },
-        { label: "Environment", value: "Temperate forest" },
-        { label: "Significance", value: "Primary prey species" }
+        { label: "Taxon", value: "Bos / Bison" },
+        { label: "Share", value: "~7.5% of minimum number of individuals" },
+        { label: "Site fauna", value: "25 mammal taxa are listed in total" }
       ],
-      apa: "Malez, M. (1978). Stratigrafski, paleontološki i paleoklimatski odnosi. In Krapina 1899–1969. JAZU.",
-      build: elk }
+      images: [], links: [doi('10.1371/journal.pone.0119802')],
+      apa: refs('miracle2007','radovcic2015') }
   ]},
   lithic: { models: [
-    { title: "Levallois Flake", category: "Core Technology", desc: "Prepared-core flake characteristic of the Mousterian. ~200–300 flakes in the assemblage.",
+    { title: "Raw Material & Blank Production", category: "Core Technology",
+      desc: "Both the Levallois method and a cobble-wedge method were used at Krapina. Most tools were made on site, and only a small share arrived as finished pieces.",
       details: [
-        { label: "Count", value: "~200–300 flakes" },
-        { label: "Material", value: "Local flint, radiolarite" },
-        { label: "Significance", value: "Diagnostic prepared-core technology" }
+        { label: "Assemblage", value: "1,191 lithic artifacts" },
+        { label: "Raw material", value: "Mostly tuffs and silicified tuffs (~65%) and chert (~23%)" },
+        { label: "Source", value: "Local river cobbles; some non-local materials are present" },
+        { label: "Chronology", value: "Raw material selection and blank production change subtly through the sequence" }
       ],
-      apa: "Monnier, G., Tostevin, G. B., et al. (2016). Nova istraživanja paleolitskog nalazišta Krapina. Godišnjak ANUBiH, 45, 45–70.",
-      build: levalloisFlake },
-    { title: "Mousterian Side-Scraper", category: "Tool Type", desc: "Racloir with retouched lateral edge. Most common tool type. Used for scraping hides and working wood.",
+      images: [], links: [doi('10.1006/jhev.1996.0129')],
+      apa: refs('simek1997','zupanic1970') },
+    { title: "Side-Scrapers", category: "Tool Type",
+      desc: "Side-scrapers dominate the Charentian Mousterian assemblages at Krapina.",
       details: [
-        { label: "Count", value: "Most numerous type" },
-        { label: "Function", value: "Hide-working, wood-working" }
+        { label: "Tool class", value: "Side-scraper (racloir)" },
+        { label: "Industry", value: "Charentian Mousterian" }
       ],
-      apa: "Gorjanović-Kramberger, D. (1906). Der diluviale Mensch von Krapina in Kroatien. C.W. Kreidel.",
-      build: sideScraper },
-    { title: "Mousterian Point", category: "Tool Type", desc: "Triangular point with retouched convergent edges. ~100+ specimens. Likely hafted for hunting and butchery.",
+      images: [], links: [doi('10.1006/jhev.1996.0129')],
+      apa: refs('simek1997') },
+    { title: "Backed Knives & Levallois Blanks", category: "Tool Type",
+      desc: "In the uppermost level, where the eagle talons were found, the authors note at least one hearth and a few Mousterian tools, mainly Levallois blanks and backed knives.",
       details: [
-        { label: "Count", value: "~100+ specimens" },
-        { label: "Function", value: "Hunting, piercing" }
+        { label: "Tool classes", value: "Levallois blanks, backed knives" },
+        { label: "Position", value: "Uppermost level of the sequence" },
+        { label: "Associated", value: "At least one hearth; the eagle-talon assemblage" }
       ],
-      apa: "Gorjanović-Kramberger, D. (1913). Život i kultura diluvijalnog čovjeka iz Krapine u Hrvatskoj. Djela JAZU.",
-      build: mousterianPoint },
-    { title: "Denticulate", category: "Tool Type", desc: "Flake with serrated, tooth-like retouch. Common component. Likely used for sawing or cutting.",
-      details: [
-        { label: "Count", value: "Common type" },
-        { label: "Function", value: "Sawing, cutting" }
-      ],
-      apa: "Gorjanović-Kramberger, D. (1906). Der diluviale Mensch von Krapina in Kroatien. C.W. Kreidel.",
-      build: denticulate }
-  ]},
-  isotope: { models: [
-    { title: "Isotope Profile", category: "Diet & Mobility", desc: "Bone collagen δ¹³C and δ¹⁵N values track diet. Comparable Neanderthal sites show high animal protein intake.",
-      details: [
-        { label: "Proxies", value: "δ¹³C, δ¹⁵N" },
-        { label: "Significance", value: "Carnivorous diet" }
-      ],
-      apa: "Richards, M. P., & Trinkaus, E. (2009). Isotopic evidence for the diets of European Neanderthals and early modern humans. PNAS, 106(38), 16034–16039.",
-      build: isotopeBars },
-    { title: "Strontium Mobility Map", category: "Landscape Use", desc: "⁸⁷Sr/⁸⁶Sr ratios in tooth enamel reflect childhood geology. At Krapina, local procurement dominates.",
-      details: [
-        { label: "Proxy", value: "⁸⁷Sr/⁸⁶Sr" },
-        { label: "Significance", value: "Local procurement, low mobility" }
-      ],
-      apa: "Richards, M. P., & Trinkaus, E. (2009). Isotopic evidence for the diets of European Neanderthals and early modern humans. PNAS, 106(38), 16034–16039.",
-      build: strontiumMap }
+      images: [], links: [doi('10.1371/journal.pone.0119802')],
+      apa: refs('radovcic2015') }
   ]},
   symbolic: { models: [
-    { title: "White-Tailed Eagle Talon", category: "Ornament", desc: "Eight eagle talons with cut marks and polished facets — strung as jewellery. Among the earliest evidence for Neanderthal symbolic behavior (~130,000 years old).",
+    { title: "White-Tailed Eagle Talons", category: "Ornament",
+      desc: "Eight white-tailed eagle talons and a foot phalanx come from one level at Krapina, about 130,000 years old. Four talons carry cut marks, all eight show polish or abrasion, and three have small nicks. The authors interpret them as parts of a necklace or bracelet. The photographs and SEM images below are the paper's own figures.",
       details: [
-        { label: "Count", value: "8 talons + 1 phalanx" },
-        { label: "Ochre", value: "Red and yellow ochre traces found" },
-        { label: "Significance", value: "Personal ornamentation, symbolic cognition" }
+        { label: "Count", value: "8 talons + 1 phalanx, from at least three eagles" },
+        { label: "Modification", value: "Edge-smoothed cut marks, polished facets, abrasion; no drilled holes" },
+        { label: "Pigment", value: "No visible traces of ochre on the talons" },
+        { label: "Significance", value: "The authors call it the earliest evidence of jewellery in the European fossil record" }
       ],
-      apa: "Radovčić, D., Sršen, A. O., Radovčić, J., & Frayer, D. W. (2015). Evidence for Neandertal jewelry: Modified white-tailed eagle claws at Krapina. PLoS ONE, 10(3), e0119802.",
-      build: eagleTalon },
-    { title: "Dendritic Limestone", category: "Symbolic Object", desc: "A split limestone cobble with dark dendritic patterns. Collected and curated solely for aesthetic qualities.",
+      images: [
+        talonImg('191376915661', 1, 'Krapina 385.1, a right talon 2, with three cut marks on the lateral surface (a–c) and an abraded area near the proximal edge (d).'),
+        talonImg('63799f353ad0', 2, 'Krapina 385.4, a left talon 3: a highly polished area (a) with two cut marks above it, and an SEM of the polish (b).'),
+        talonImg('278669b5796a', 3, 'Krapina 385.5, a right talon 1, with cut marks across the neck of the talon.'),
+        talonImg('573bc4faca7d', 4, 'Krapina 386.1, a right talon 2: two cut marks with smoothed edges along the medial articular margin.'),
+        talonImg('183dec074c13', 5, 'Krapina 385.18 (386.18), a left digit 3 phalanx, with cut marks seen in SEM.'),
+        talonImg('ad4875c3baf3', 6, 'Articulation of talon 385.4 and phalanx 386.18; the arrow marks the highly polished area.'),
+        talonImg('fad2db1eb596', 7, 'Three examples of human manipulation: smoothed cut marks (a), a burnished area (b) and a nick on the plantar margin (c).')
+      ],
+      links: [doi('10.1371/journal.pone.0119802')],
+      apa: refs('radovcic2015') },
+    { title: "Dendritic Limestone Rock", category: "Symbolic Object",
+      desc: "A split piece of brownish micritic limestone with dark dendritic forms. None of the 1,000+ Krapina lithics resembles it, and it was not worked into a tool. The authors propose it was collected for its aesthetic attributes.",
       details: [
-        { label: "Feature", value: "Dendritic patterns" },
-        { label: "Significance", value: "Aesthetic collection, non-utilitarian" }
+        { label: "Rock", value: "Flat, split micritic limestone with dendritic forms and limonite staining" },
+        { label: "Source", value: "Probably outcrops a few km north; the shelter itself is sandstone" },
+        { label: "Interpretation", value: "Collected and not further processed; proposed as an aesthetic choice" }
       ],
-      apa: "Frayer, D. W., Radovčić, J., & Radovčić, D. (2016). Krapina 144.305: A curious case of a split rock. Comptes Rendus Palevol, 15(8), 1005–1012.",
-      build: carvedLimestone },
-    { title: "Cut-Marked Skull (Krapina 3)", category: "Mortuary Treatment", desc: "Skull of a young adult woman with 42 shallow cut marks on the frontal. Interpreted as ritual defleshing, cannibalism, or mortuary treatment.",
+      images: [], links: [doi('10.1016/j.crpv.2016.04.013')],
+      apa: refs('radovcic2016') },
+    { title: "Cut-Marked Cranium (Krapina 3)", category: "Mortuary Treatment",
+      desc: "Krapina 3 (Cranium C), an adult female cranium, has 35 mostly parallel marks climbing the frontal bone. Frayer and colleagues argue they do not match scalping, cannibalism or defleshing and may reflect ritual treatment of the dead. The reading is contested: others favour defleshing before secondary burial, or burial rather than cannibalism.",
       details: [
-        { label: "Cut marks", value: "42 (frontal)" },
-        { label: "Significance", value: "Symbolic treatment of the dead" }
+        { label: "Marks", value: "35 mostly parallel marks, averaging 5.2 mm long and 1.2 mm apart" },
+        { label: "Authors' reading", value: "A type of funereal behaviour not yet documented in Neandertals" },
+        { label: "Other views", value: "Russell (1987): defleshing before secondary burial. Trinkaus (1985): burial rather than cannibalism" }
       ],
-      apa: "Trinkaus, E. (1985). Cannibalism and burial at Krapina. Journal of Human Evolution, 14(2), 203–216.",
-      build: cutSkull }
+      images: [], links: [{ label: 'Open the paper', url: 'https://core.ac.uk/download/213392577.pdf' }],
+      apa: refs('frayer2006','russell1987','trinkaus1985') }
   ]}
 };
 
+/* Verified Sketchfab embeds (licence read from each model page). Casts and comparative specimens are labelled as such. */
+const SK = (uid,title,by,lic,licUrl,note,age) => ({uid,title,by,lic,licUrl,note,age,page:'https://sketchfab.com/3d-models/'+uid});
+const SK_J = SK('3f854c2201a046d5818f2623b5ba796f','Krapina J mandible (cast)','Digital Archaeology Laboratory','CC BY 4.0','https://creativecommons.org/licenses/by/4.0/','Scan of a cast of a Neandertal mandible from Krapina, not the original fossil.','Krapina: about 130,000 years old');
+const SK_L = SK('d5a54439bee44da1a002584091b05f0e','Levallois flake tool, Amiens, France — comparison artifact, not from Krapina','Chris LaMack / RLA Archaeology','CC BY-NC-SA 4.0','https://creativecommons.org/licenses/by-nc-sa/4.0/','Flint Levallois flake (125.7 mm long), Middle Palaeolithic.','About 100,000 years old');
+const SK3D = {
+ 'morph|Krapina 5 Cranial Vault': SK('a1ffe02b7e2f42ff972953484f3212d3','La Ferrassie 1 cranium (resin cast) — comparison Neandertal, not from Krapina','Jose A. Villena / Museo de Historia Natural UV','CC BY 4.0','https://creativecommons.org/licenses/by/4.0/','Photogrammetry of a resin replica (MGUV 22814). It shows a Neandertal cranium for comparison; it is not Krapina 5.','La Ferrassie 1 was found in 1909 (France)'),
+ 'morph|Taurodont Molar': SK_J,
+ 'dental|Taurodontism': SK_J,
+ 'fauna|Cave Bear (Ursus spelaeus)': SK('2420291b7f184cc6a62ff57d4628223d','Juvenile cave bear skull (NHMW) — comparison specimen, not from Krapina','Natural History Museum Vienna','CC BY-NC 4.0','https://creativecommons.org/licenses/by-nc/4.0/','Scan of a juvenile Ursus spelaeus skull from a cave in Styria, Austria.','Cave bears died out about 24,000 years ago'),
+ 'fauna|Beaver (Castor fiber)': SK('5c7d8a54d5ac408d8f25ebd0883f6d9e','Eurasian beaver skull — modern reference specimen','Mammal Research Institute PAS, Poland','CC BY 4.0','https://creativecommons.org/licenses/by/4.0/','Skull of Castor fiber from a zoological collection, scanned with a structured-light scanner.','Modern specimen'),
+ 'fauna|Bison / Aurochs (Bos/Bison)': SK('46504d5752d140768bc01500a0fa4e0d','Aurochs skull (NHMUK PV OR 50086) — comparison specimen, not from Krapina','NHM Imaging, Natural History Museum London','CC BY-NC 4.0','https://creativecommons.org/licenses/by-nc/4.0/','One of the most complete aurochs (Bos primigenius) skulls from Britain, from Ilford, Essex.','About 200,000–170,000 years old (Britain)'),
+ 'lithic|Raw Material & Blank Production': SK_L,
+ 'lithic|Backed Knives & Levallois Blanks': SK_L
+};
+
 /* ============================================================
-   LAB INIT
+   BUILD LAB SECTIONS (image galleries, no 3D)
    ============================================================ */
+function buildLabSections(){
+  const host = document.getElementById('lab-sections');
+  host.innerHTML = Object.keys(LAB_META).map(key => {
+    const m = LAB_META[key];
+    return `
+<section id="tab-${key}" class="flex-1 hidden flex-col space-y-4">
+  <div class="glass-panel p-4 rounded-2xl">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+      <div>
+        <h2 class="text-lg font-serif font-semibold text-gold-500 flex items-center gap-2"><i class="fa-solid ${m.icon}"></i> ${m.title}</h2>
+        <p class="text-xs text-parchment-200/80">${m.sub}</p>
+      </div>
+      <div id="${key}-buttons" class="flex flex-wrap gap-2"></div>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[580px]">
+    <div class="lg:col-span-3 glass-panel rounded-2xl relative overflow-hidden border border-gold-500/20 shadow-2xl min-h-[520px]">
+      <div id="${key}-container" class="absolute inset-0 overflow-y-auto p-4 flex flex-col gap-3"></div>
+    </div>
+    <div class="glass-panel p-5 rounded-2xl border border-gold-500/20">
+      <div class="flex items-center justify-between gap-2 pb-3 border-b border-parchment-200/10">
+        <h3 id="${key}-title" class="font-serif font-bold text-gold-500 text-base">—</h3>
+        <span id="${key}-category" class="text-xs uppercase tracking-wider bg-terracotta-700/80 px-2 py-0.5 rounded text-parchment-100 text-right">—</span>
+      </div>
+      <p id="${key}-desc" class="mt-4 text-xs text-parchment-200/90 leading-relaxed"></p>
+      <div id="${key}-details" class="mt-3 space-y-2 text-xs"></div>
+      <div class="mt-3 bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
+        <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th</span>
+        <p id="${key}-apa" class="text-parchment-200/95 leading-relaxed text-xs"></p>
+      </div>
+    </div>
+  </div>
+</section>`;
+  }).join('');
+}
+
 function initLab(key){
   const cfg = LAB_DATA[key];
   if(!cfg) return;
-  const el = document.getElementById(`${key}-container`);
-  if(!el) return;
-  const w = Math.max(el.clientWidth, 400);
-  const h = Math.max(el.clientHeight, 500);
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0b1711);
-  const camera = new THREE.PerspectiveCamera(45, w/h, 0.1, 1000);
-  camera.position.set(0, 0, 6);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(w, h);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  el.appendChild(renderer.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-  const l1 = new THREE.DirectionalLight(0xfff5e6, 1.4); l1.position.set(10, 15, 10); scene.add(l1);
-  const l2 = new THREE.PointLight(0xC85A32, 1.2, 30); l2.position.set(-10, -10, 5); scene.add(l2);
-  const l3 = new THREE.PointLight(0xD4AF37, 0.8, 30); l3.position.set(10, -5, -8); scene.add(l3);
-  const state = { scene, camera, renderer, current: null, drag: false, prev: {x:0,y:0}, rx:0.3, ry:0.5 };
-  LAB_STATE[key] = state;
   const bc = document.getElementById(`${key}-buttons`);
   bc.innerHTML = '';
   cfg.models.forEach((m, i) => {
@@ -1539,26 +1084,28 @@ function initLab(key){
     b.onclick = () => loadLab(key, i);
     bc.appendChild(b);
   });
-  el.addEventListener('mousedown', e => { state.drag = true; state.prev = { x:e.clientX, y:e.clientY }; });
-  el.addEventListener('mousemove', e => { if(!state.drag) return; state.ry += (e.clientX-state.prev.x)*0.008; state.rx += (e.clientY-state.prev.y)*0.008; state.prev = { x:e.clientX, y:e.clientY }; });
-  window.addEventListener('mouseup', () => { state.drag = false; });
   loadLab(key, 0);
-  (function loop(){
-    requestAnimationFrame(loop);
-    if(state.current){
-      state.current.rotation.y += (state.ry - state.current.rotation.y)*0.06;
-      state.current.rotation.x += (state.rx - state.current.rotation.x)*0.06;
-      if(!state.drag) state.ry += 0.005;
-    }
-    renderer.render(scene, camera);
-  })();
-  if(window.ResizeObserver) new ResizeObserver(() => resizeR(renderer, camera, el)).observe(el);
+}
+
+function showFigure(key, mi, ii){
+  const m = LAB_DATA[key].models[mi];
+  const im = m.images[ii];
+  const box = document.getElementById(`${key}-fig`);
+  if(!box || !im) return;
+  box.innerHTML = `
+    <div class="bg-black/40 rounded-xl border border-parchment-200/10 flex items-center justify-center p-2" style="min-height:320px">
+      <img src="${im.src}" alt="${im.caption.replace(/"/g,'&quot;')}" referrerpolicy="no-referrer" loading="lazy"
+           style="max-width:100%;max-height:520px;object-fit:contain;border-radius:6px"
+           onerror="this.replaceWith(Object.assign(document.createElement('p'),{className:'text-sm text-center p-6',innerHTML:'Image could not load here. <a class=&quot;underline text-gold-500&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; href=&quot;${im.link}&quot;>View it in the paper</a>.'}))">
+    </div>
+    <p class="text-sm text-parchment-200/95 leading-relaxed mt-2">${im.caption}</p>
+    <p class="text-xs text-parchment-200/80 mt-1">${im.credit} <a class="underline text-gold-500" target="_blank" rel="noopener" href="${im.link}">Source</a></p>`;
+  document.querySelectorAll(`#${key}-thumbs button`).forEach((t, n) => t.style.outline = n === ii ? '2px solid #D4AF37' : 'none');
 }
 
 function loadLab(key, index){
   const cfg = LAB_DATA[key];
-  const state = LAB_STATE[key];
-  if(!state || !cfg) return;
+  if(!cfg) return;
   cfg.models.forEach((_, i) => {
     const b = document.getElementById(`${key}-btn-${i}`);
     if(!b) return;
@@ -1570,27 +1117,168 @@ function loadLab(key, index){
   document.getElementById(`${key}-title`).innerText = m.title;
   document.getElementById(`${key}-category`).innerText = m.category;
   document.getElementById(`${key}-desc`).innerText = m.desc;
-  document.getElementById(`${key}-view-title`).innerText = m.title.toUpperCase();
   document.getElementById(`${key}-apa`).innerHTML = m.apa;
   document.getElementById(`${key}-details`).innerHTML = m.details.map(d => `
     <div class="bg-[#11231A]/80 p-3 rounded-xl border border-parchment-200/10">
-      <span class="font-semibold text-gold-500 block mb-0.5 text-[10px] uppercase tracking-widest">${d.label}</span>
-      <p class="text-parchment-200/85 leading-relaxed">${d.value}</p>
+      <span class="font-semibold text-gold-500 block mb-0.5 text-xs uppercase tracking-widest">${d.label}</span>
+      <p class="text-parchment-200/95 leading-relaxed">${d.value}</p>
     </div>`).join('');
-  if(state.current){
-    state.current.traverse(o => {
-      if(o.geometry) o.geometry.dispose();
-      if(o.material) Array.isArray(o.material) ? o.material.forEach(x => x.dispose()) : o.material.dispose();
-    });
-    state.scene.remove(state.current);
+
+  const c = document.getElementById(`${key}-container`);
+  const s3 = SK3D[key + '|' + m.title];
+  let html = '';
+  if(s3){
+    html += `<div class="rounded-xl overflow-hidden border border-gold-500/30" style="background:#000">
+      <iframe title="${s3.title}" style="width:100%;height:440px;border:0" allowfullscreen allow="autoplay; fullscreen; xr-spatial-tracking" loading="lazy"
+        src="https://sketchfab.com/models/${s3.uid}/embed?ui_theme=dark&dnt=1&autostart=1&ui_infos=0"></iframe></div>
+      <div class="text-sm text-parchment-200/95 leading-relaxed"><b class="text-gold-500">${s3.title}</b><br>${s3.note}<br>
+        <span class="inline-block mt-1 px-2 py-0.5 rounded bg-terracotta-700/70 text-xs font-semibold"><i class="fa-regular fa-clock"></i> Time: ${s3.age}</span>
+        <span class="block text-xs text-parchment-200/80 mt-1">Interactive 3D: drag to rotate, scroll to zoom. Model by ${s3.by}, <a class="underline text-gold-500" target="_blank" rel="noopener" href="${s3.licUrl}">${s3.lic}</a>, via <a class="underline text-gold-500" target="_blank" rel="noopener" href="${s3.page}">Sketchfab</a>. Needs an internet connection.</span></div>`;
   }
-  state.current = m.build();
-  state.scene.add(state.current);
+  if(m.images && m.images.length){
+    html += `<div id="${key}-fig"></div>
+      <div id="${key}-thumbs" class="flex flex-wrap gap-2 mt-1">${m.images.map((im, n) =>
+        `<button style="padding:0;border:0;background:none;border-radius:6px" onclick="showFigure('${key}',${index},${n})" title="Figure ${n+1}">
+           <img src="${im.src}" referrerpolicy="no-referrer" loading="lazy" alt="Figure ${n+1}" style="width:84px;height:64px;object-fit:cover;border-radius:6px">
+         </button>`).join('')}</div>`;
+    c.innerHTML = html;
+    showFigure(key, index, 0);
+  } else if(s3){
+    c.innerHTML = html;
+  } else {
+    const links = (m.links || []).map(l => `<a class="underline text-gold-500" target="_blank" rel="noopener" href="${l.url}">${l.label}</a>`).join(' · ');
+    c.innerHTML = `
+      <div class="flex-1 flex items-center justify-center">
+        <div class="max-w-md text-center p-6 rounded-2xl border border-gold-500/30 bg-[#11231A]/70">
+          <i class="fa-regular fa-image text-3xl text-gold-500 mb-3"></i>
+          <p class="text-sm text-parchment-200/95 leading-relaxed">No openly licensed 3D scan or photograph of this specimen could be verified, so nothing is shown rather than an invented model.</p>
+          <p class="text-sm mt-3">${links || 'See the reference on the right.'}</p>
+        </div>
+      </div>`;
+  }
 }
 
 /* ============================================================
    BOOT
    ============================================================ */
+
+/* ============================================================
+   TIMELINE — every entry restates only what its cited source reports
+   ============================================================ */
+const TL_CAT = {
+  dep:{n:'Deposition & dating', c:'#4C8DF6'},
+  exc:{n:'Excavation & publication', c:'#E0663A'},
+  anat:{n:'Anatomy & health', c:'#E0559F'},
+  beh:{n:'Behaviour & symbolism', c:'#3FA37A'},
+  tool:{n:'Stone tools & fauna', c:'#D4AF37'}
+};
+const TL = [
+ {y:'~130,000 yr ago', lbl:'Deposits accumulate', cat:'dep', title:'The shelter fills with sediment and bones',
+  body:'ESR dating of Krapina material places the hominin-bearing deposits at about 130,000 years ago, in the late part of the last interglacial (MIS 5e). Sedimentation rates suggest the nine-level sequence built up in under 10,000 years.',
+  facts:['Dating method: electron spin resonance (ESR)','Fauna points to a warm interglacial setting'], refs:['rink1995','miracle2007']},
+ {y:'1899–1905', lbl:'Excavation', cat:'exc', title:'Gorjanović-Kramberger excavates Hušnjakovo',
+  body:'Dragutin Gorjanović-Kramberger excavated the rock shelter on Hušnjakovo Hill between 1899 and 1905. The work recovered roughly 870–900 hominin remains from at least 70 individuals, and the shelter was emptied of sediment soon afterwards.',
+  facts:['Nine levels recognised, deposits up to ~11 m deep','1,191 lithic artifacts and almost 2,800 animal remains recovered'], refs:['gk1906']},
+ {y:'1906', lbl:'First monograph', cat:'exc', title:'The human remains are described in print',
+  body:'Gorjanović-Kramberger published a major monograph on the Krapina diluvial human in 1906, published by Kreidel.',
+  facts:['Written in German'], refs:['gk1906']},
+ {y:'1913', lbl:'Life & culture', cat:'exc', title:'A book on the life and culture of Krapina man',
+  body:'In 1913 Gorjanović-Kramberger published Život i kultura diluvijalnoga čovjeka iz Krapine u Hrvatskoj, issued by the Yugoslav Academy of Sciences and Arts.',
+  facts:['Croatian-language monograph'], refs:['gk1913']},
+ {y:'1970', lbl:'Krapina 1899–1969', cat:'tool', title:'Stratigraphy and stone tools re-examined',
+  body:'The 1970 volume Krapina 1899–1969 included Malez on new views of the site’s stratigraphy and Zupanič on a petrographic study of the stone artifacts.',
+  facts:['Volume edited by M. Malez','Petrography addressed the raw materials of the tools'], refs:['malez1970','zupanic1970']},
+ {y:'1985', lbl:'Cannibalism debate', cat:'beh', title:'Cannibalism or burial?',
+  body:'Trinkaus argued for burial rather than cannibalism at Krapina. Russell (1987) instead discussed mortuary practices, including defleshing before secondary burial. The debate shows how differently the same bones can be read.',
+  facts:['Trinkaus (1985): burial rather than cannibalism','Russell (1987): defleshing before secondary burial'], refs:['trinkaus1985','russell1987']},
+ {y:'1987', lbl:'Tooth grooves', cat:'anat', title:'Artificial grooves on Krapina teeth',
+  body:'Frayer and Russell reported artificial grooves on Krapina Neandertal teeth. The reported sample was 14 teeth from ten individuals.',
+  facts:['Interpreted as toothpick use'], refs:['frayer1987','frayer2017']},
+ {y:'1995', lbl:'ESR ages', cat:'dep', title:'Direct ages for the Krapina hominids',
+  body:'Rink and colleagues published ESR ages for Krapina hominids in Nature, giving an age of about 130,000 years.',
+  facts:['One-page report in Nature, volume 378'], refs:['rink1995']},
+ {y:'1997', lbl:'Tools through time', cat:'tool', title:'Chronological change in stone tools',
+  body:'Simek and Smith studied chronological changes in the stone tool assemblages. Raw material selection and blank production shift subtly through the sequence, and both Levallois and cobble-wedge methods were used.',
+  facts:['1,191 lithic artifacts','Mostly tuffs and chert from local river cobbles'], refs:['simek1997']},
+ {y:'1999', lbl:'Taurodont molars', cat:'anat', title:'Radiographs show taurodont molars',
+  body:'Dumančić and colleagues presented a radiographic study of 27 Krapina permanent lower molars at the 1999 Krapina conference. 70.4% were taurodont, with a median taurodontic index of 44 against 9 in modern molars.',
+  facts:['Conference abstract (Book of abstracts, pp. 21–22)','No taurodont molars in the modern control group'], refs:['dumancic1999']},
+ {y:'2006', lbl:'Krapina 5 & 3', cat:'anat', title:'A new vault reconstruction and a cut-marked cranium',
+  body:'Caspari and Radovčić published a new reconstruction of Krapina 5, an adult male cranial vault. In the same year Frayer and colleagues described 35 mostly parallel cut marks on Krapina 3 and asked whether they reflect ritual behaviour.',
+  facts:['Krapina 5 fits the male Neandertal range for most measurements','Krapina 3 interpretation is contested'], refs:['caspari2006','frayer2006']},
+ {y:'2007', lbl:'Fauna monograph', cat:'tool', title:'The animal bones catalogued',
+  body:'Miracle’s monograph on the Krapina Paleolithic site documents the faunal remains. Rhinoceros (21.7%) and bears (17.0%) are most abundant, and beaver makes up 17.9% of the bones.',
+  facts:['Rhinoceros is Merck’s rhinoceros','Bison/aurochs ~7.5%'], refs:['miracle2007']},
+ {y:'2013', lbl:'Ancient tumour', cat:'anat', title:'Fibrous dysplasia in a Neandertal rib',
+  body:'Monge and colleagues diagnosed fibrous dysplasia in rib fragment 120.71, the first definitive case of this tumour in a Neandertal.',
+  facts:['Age: more than 120,000 years','Most common benign rib tumour in living humans'], refs:['monge2013']},
+ {y:'2015', lbl:'Eagle-talon jewellery', cat:'beh', title:'Modified white-tailed eagle claws',
+  body:'Radovčić and colleagues described eight white-tailed eagle talons and a phalanx from Krapina, about 130,000 years old. Cut marks, polish and abrasion led them to interpret the set as parts of a necklace or bracelet, which they call the earliest jewellery in the European fossil record.',
+  facts:['Open-access paper with photographs and SEM images (see the Symbolic tab)'], refs:['radovcic2015']},
+ {y:'2016', lbl:'An odd rock', cat:'beh', title:'A dendritic limestone collected, not worked',
+  body:'Radovčić and colleagues reported a split piece of limestone with dark dendritic forms. It was not worked into a tool, and they propose it was collected for its aesthetic attributes.',
+  facts:['Probable source a few km north of the shelter'], refs:['radovcic2016']},
+ {y:'2017', lbl:'Prehistoric dentistry?', cat:'anat', title:'Toothpick grooves in Dental Person 20',
+  body:'Frayer and colleagues examined four associated mandibular teeth showing six toothpick grooves, a rotated premolar and a partly impacted M3, and read the pattern as likely self-treatment of a dental problem.',
+  facts:['Published in the Bulletin of the International Association for Paleodontology'], refs:['frayer2017']}
+];
+let tlI = 0, tlF = 'all';
+function tlBuild(){
+  const ch = document.getElementById('tl-chips');
+  ch.innerHTML = `<button class="tl-chip on" style="--c:#fff" data-k="all">All</button>` +
+    Object.entries(TL_CAT).map(([k,v])=>`<button class="tl-chip" style="--c:${v.c}" data-k="${k}">${v.n}</button>`).join('');
+  ch.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    tlF=b.dataset.k; ch.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+    document.querySelectorAll('.tl-item').forEach((el,i)=>el.classList.toggle('dim',tlF!=='all'&&TL[i].cat!==tlF));
+    if(tlF!=='all'&&TL[tlI].cat!==tlF){ const n=TL.findIndex(e=>e.cat===tlF); if(n>=0) tlSel(n); }
+  });
+  document.getElementById('tl-track').innerHTML = TL.map((e,i)=>
+    `<div class="tl-item" style="--c:${TL_CAT[e.cat].c}" onclick="tlSel(${i})"><div class="tl-dot"></div><div class="tl-yr">${e.y}</div><div class="tl-lbl">${e.lbl}</div></div>`).join('');
+  tlSel(0);
+}
+function tlSel(i){
+  tlI=i; const e=TL[i], c=TL_CAT[e.cat];
+  document.querySelectorAll('.tl-item').forEach((el,n)=>el.classList.toggle('active',n===i));
+  const act=document.querySelectorAll('.tl-item')[i];
+  if(act) act.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  document.getElementById('tl-prog').style.width=((i+1)/TL.length*100)+'%';
+  document.getElementById('tl-detail').innerHTML = `
+   <div class="tl-card" style="--c:${c.c}">
+     <h3>${e.y} · ${e.title}</h3>
+     <div class="p-4 grid md:grid-cols-3 gap-4">
+       <div class="md:col-span-2">
+         <span class="text-xs uppercase tracking-widest font-bold" style="color:${c.c}">${c.n}</span>
+         <p class="text-sm text-parchment-200/95 leading-relaxed mt-2" style="font-size:1.05rem">${e.body}</p>
+         <ul class="mt-3 space-y-1">${e.facts.map(f=>`<li class="text-sm text-parchment-200/95"><span style="color:${c.c}">◆</span> ${f}</li>`).join('')}</ul>
+         <div class="flex gap-2 mt-4">
+           <button class="strata-btn" onclick="tlSel(Math.max(0,tlI-1))"><i class="fa-solid fa-arrow-left"></i> Earlier</button>
+           <button class="strata-btn" onclick="tlSel(Math.min(TL.length-1,tlI+1))">Later <i class="fa-solid fa-arrow-right"></i></button>
+           <span class="text-xs self-center text-parchment-200/70">${i+1} / ${TL.length}</span>
+         </div>
+       </div>
+       <div class="bg-gradient-to-br from-terracotta-700/40 to-forest-900/60 p-3 rounded-xl border border-gold-500/40">
+         <span class="font-semibold text-gold-500 block mb-1 text-xs"><i class="fa-solid fa-book"></i> APA 7th</span>
+         <p class="text-parchment-200/95 leading-relaxed text-xs">${refs(...e.refs)}</p>
+       </div>
+     </div>
+   </div>`;
+}
+document.addEventListener('keydown',ev=>{
+  const tab=document.getElementById('tab-timeline');
+  if(!tab||tab.classList.contains('hidden')) return;
+  if(ev.key==='ArrowRight') tlSel(Math.min(TL.length-1,tlI+1));
+  if(ev.key==='ArrowLeft') tlSel(Math.max(0,tlI-1));
+});
+
+
+function buildRefList(){
+  const keys = Object.keys(REF).sort((x,y)=>REF[x].localeCompare(REF[y],'hr'));
+  document.getElementById('refs-count').textContent = keys.length + ' references.';
+  document.getElementById('refs-list').innerHTML = keys.map(k=>`<p class="text-parchment-200/95 leading-relaxed mb-4" style="font-size:1.05rem;padding-left:2rem;text-indent:-2rem;word-break:break-word">${REF[k].replace(/(https:\/\/doi\.org\/[^\s<]+)/g,'<a class="underline text-gold-500" target="_blank" rel="noopener" href="$1">$1</a>')}</p>`).join('');
+}
+buildLabSections();
+tlBuild();
+buildRefList();
 window.addEventListener('load', () => {
   setTimeout(() => {
     initGIS();
